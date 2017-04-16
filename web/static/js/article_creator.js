@@ -2,6 +2,7 @@ var idk = $('#idk').val();
 var span = '<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>'
 var edit_button = "<button class='pull-right' type='button' name='component'>Edytuj</button>";
 var delete_button = "<button class='pull-right' type='button' name='component'>Usuń</button>";
+var ajax_url = '/administration/article_creator/ajax/'
 
 $( function() {
 $( "#sortable" ).sortable();
@@ -11,10 +12,10 @@ $( "#sortable" ).disableSelection();
 
 function postComponent(cmd, modal, input){
     var componentData = $(input).val();
-    var header = $(modal.concat(" ", "#title")).val();
+    var header = $(modal.concat(" ", "#id_header")).val();
     $.ajax({
         type: 'POST',
-        url: '/administration/article_creator/ajax/',
+        url: ajax_url,
         data: {
             'cmd': cmd,
             'idk': idk,
@@ -31,12 +32,7 @@ function postComponent(cmd, modal, input){
 
                 $(modal).modal('hide');
                 $(input).val('');
-            } else{
-                $(input)[0].checkValidity();
             }
-
-
-
         }
     });
 }
@@ -55,13 +51,11 @@ $('#addVideo').click(function(){
     postComponent('addVideo', '#videoModal', '#id_video');
 });
 
-
-function upload(event) {
-    event.preventDefault();
-    var data = new FormData($('#file-upload-form').get(0),);
-    var header = $('#id_header').val()
+$('#addImage').click(function(){
+    var data = new FormData($('#image-form').get(0));
+    var header = $('#id_header').val();
     $.ajax({
-        url: '/administration/article_creator/ajax/',
+        url: ajax_url,
         type: 'POST',
         data: data,
         cache: false,
@@ -78,11 +72,7 @@ function upload(event) {
                 $('#imageModal').modal('hide');
                 $('#id_image').val('');
         }
-    });
-}
-
-$(function() {
-    $('#file-upload-form').submit(upload);
+    }});
 });
 
 

@@ -39,18 +39,15 @@
             <div class="row">
                 <div class="col-lg-2">
                     <button type="button" class="" data-toggle="modal" data-target="#paragraphModal">dodaj kolumnę</button>
-                    {% include "modals/paragraph_modal.html" %}
                 </div>
                 <div class="col-lg-2">
                     <button type="button" class="" data-toggle="modal" data-target="#imageModal">dodaj obraz</button>
                 </div>
                 <div class="col-lg-2">
                     <button type="button" class="" data-toggle="modal" data-target="#quoteModal">dodaj cytat</button>
-                    {% include "modals/quote_modal.html" %}
                 </div>
                 <div class="col-lg-2">
                     <button type="button" class="" data-toggle="modal" data-target="#videoModal">dodaj wideo</button>
-                    {% include "modals/video_modal.html" %}
                 </div>
 
             </div>
@@ -83,6 +80,12 @@
     </form>
 </div>
 {% include "modals/image_modal.html" %}
+{% include "modals/paragraph_modal.html" %}
+{% include "modals/quote_modal.html" %}
+{% include "modals/video_modal.html" %}
+
+
+
 
 {% endblock %}
 

@@ -44,18 +44,48 @@ class ImageForm(ModelForm):
         widgets = {
             'header': TextInput(attrs={'class': 'width100','placeholder':"Tytuł jest używany tylko w trybie edycji"})
         }
+        labels = {'header': 'tytuł grafiki',
+                  'image': ''}
 
 class ParagraphForm(ModelForm):
     def __init__(self, *args, **kwargs):
-        super(TextForm, self).__init__(*args, **kwargs)
+        super(ParagraphForm, self).__init__(*args, **kwargs)
     class Meta:
         model = Component
         fields = ('header', 'text')
         widgets = {
-            'header': TextInput(attrs={'class': 'width100','placeholder':"Tytuł jest używany tylko w trybie edycji"})
+            'header': TextInput(attrs={'class': 'width100','placeholder':"Tytuł jest używany tylko w trybie edycji"}),
+            'text': Textarea(attrs={'placeholder':'Dodaj treść kolumny','id': 'id_text'})
         }
+        labels = {'header': 'tytuł akapitu',
+                  'text': 'treść akapitu'}
 
-class ParagraphForm(ModelForm):
+
+
+class QuoteForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(QuoteForm, self).__init__(*args, **kwargs)
     class Meta:
         model = Component
-        fields = ('header',)
+        fields = ('header', 'quote', 'kind')
+        widgets = {
+            'header': TextInput(attrs={'class': 'width100','placeholder': "Tytuł jest używany tylko w trybie edycji"}),
+            'quote': TextInput(attrs={'placeholder': 'Dodaj treść cytatu', 'id': 'id_quote', 'class': 'width100'}),
+            'kind': TextInput(attrs={'class':'hidden'})
+        }
+        labels = {'header': 'tytuł cytatu',
+                  'quote': 'treść cytatu'}
+
+
+class VideoForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(VideoForm, self).__init__(*args, **kwargs)
+    class Meta:
+        model = Component
+        fields = ('header', 'url')
+        widgets = {
+            'header': TextInput(attrs={'class': 'width100','placeholder':"Tytuł jest używany tylko w trybie edycji"}),
+            'url': TextInput(attrs={'placeholder': 'Dodaj adres URL', 'id': 'id_video', 'class': 'width100'})
+        }
+        labels = {'header': 'tytuł video',
+                  'url': 'adres URL'}

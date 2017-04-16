@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .forms import ArticleForm, LoginForm, ImageForm
+from .forms import ArticleForm, LoginForm, ImageForm, VideoForm, QuoteForm, ParagraphForm
 from .handlers import *
 from .models import Component, Article, Section
 from django.contrib.auth import authenticate, login
@@ -36,6 +36,9 @@ def user_login(request):
 
 def articleCreator(request, idk=None):
     image_upload_form = ImageForm()
+    quoteForm = QuoteForm()
+    videoForm = VideoForm()
+    paragraphForm = ParagraphForm()
     if not idk:
         article = Article()
     else:
@@ -64,7 +67,10 @@ def articleCreator(request, idk=None):
     return render(request, 'article/article_creator.html', {'article_form': article_form,
                                                             'article': article,
                                                             'idk': article.id,
-                                                            'image_upload_form': image_upload_form})
+                                                            'image_upload_form': image_upload_form,
+                                                            'videoForm': videoForm,
+                                                            'paragraphForm': paragraphForm,
+                                                            'quoteForm': quoteForm})
 
 def articleCreatorOperations(request):
     component_data = request.POST.get('componentData', '')
@@ -85,10 +91,13 @@ def articleCreatorOperations(request):
         else:
             response_data = {'success': False}
     else:
+
         if request.POST.get('cmd', '') == 'addParagraph':
+            component_form = ParagraphForm(data=request.POST,initial={'kind':'text'})
             component.kind = 'text'
             component.text = component_data
         if request.POST.get('cmd', '') == 'addQuote':
+            print(request.POST)
             component.kind = 'quote'
             component.quote = component_data
         if request.POST.get('cmd', '') == 'addVideo':
