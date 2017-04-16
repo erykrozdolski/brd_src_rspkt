@@ -73,40 +73,22 @@ def articleCreator(request, idk=None):
                                                             'quoteForm': quoteForm})
 
 def articleCreatorOperations(request):
-    component_data = request.POST.get('componentData', '')
-    header = request.POST.get('header', '')
-    if not header or not component_data:
-        return HttpResponse(json.dumps({'success': False, 'error': ''}), content_type='application/json')
-    component = Component()
-    component.header = header
-    if request.FILES:
-        component_form = ImageForm(data=request.POST, files=request.FILES)
-        if component_form.is_valid():
-            component = component_form.save()
-            component.kind = 'image'
-            component.header = header
-            component.save()
-            idk = component.id
-            response_data = {'success': True, 'idk': idk}
-        else:
-            response_data = {'success': False}
-    else:
-
-        if request.POST.get('cmd', '') == 'addParagraph':
-            component_form = ParagraphForm(data=request.POST,initial={'kind':'text'})
-            component.kind = 'text'
-            component.text = component_data
-        if request.POST.get('cmd', '') == 'addQuote':
-            print(request.POST)
-            component.kind = 'quote'
-            component.quote = component_data
-        if request.POST.get('cmd', '') == 'addVideo':
-            component.kind = 'video'
-            component.url = embed_url(component_data)
-
-        component.save()
+    if request.POST.get('cmd', '') == 'addImage':
+        component_form = ImageForm(data=request.POST, files=request.FILES, initial={'kind': 'image'})
+    elif request.POST.get('cmd', '') == 'addParagraph':
+        component_form = ParagraphForm(data=request.POST, initial={'kind': 'text'})
+    elif request.POST.get('cmd', '') == 'addQuote':
+        component_form = QuoteForm(data=request.POST, initial={'kind': 'quote'})
+    elif request.POST.get('cmd', '') == 'addVideo':
+        component_form = VideoForm(data=request.POST, initial={'kind': 'video'})
+    if component_form.is_valid():
+        component = component_form.save()
         idk = component.id
         response_data = {'success': True, 'idk': idk}
+    else:
+        print(component_form.errors)
+        response_data = {'success': False}
+
     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
 
@@ -116,6 +98,7 @@ def articleView(request, idk=None):
         components = article.components.all().order_by('position')
 
     return render(request, 'article/article.html', {'article': article, 'components': components})
+
 
 def articlesList(request):
     articleTable = ArticleTable(Article.objects.all())

@@ -42,7 +42,7 @@ class ImageForm(ModelForm):
         model = Component
         fields = ('image', 'header')
         widgets = {
-            'header': TextInput(attrs={'class': 'width100','placeholder':"Tytuł jest używany tylko w trybie edycji"})
+            'header': TextInput(attrs={'class': 'width100', 'placeholder': "Tytuł jest używany tylko w trybie edycji"})
         }
         labels = {'header': 'tytuł grafiki',
                   'image': ''}
@@ -67,11 +67,10 @@ class QuoteForm(ModelForm):
         super(QuoteForm, self).__init__(*args, **kwargs)
     class Meta:
         model = Component
-        fields = ('header', 'quote', 'kind')
+        fields = ('header', 'quote')
         widgets = {
             'header': TextInput(attrs={'class': 'width100','placeholder': "Tytuł jest używany tylko w trybie edycji"}),
             'quote': TextInput(attrs={'placeholder': 'Dodaj treść cytatu', 'id': 'id_quote', 'class': 'width100'}),
-            'kind': TextInput(attrs={'class':'hidden'})
         }
         labels = {'header': 'tytuł cytatu',
                   'quote': 'treść cytatu'}
