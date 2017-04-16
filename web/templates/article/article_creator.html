@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+<div class="row">
+    <form id='article_form' action=""  method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-5">
+                <h1>{%if idk %} edytuj {% else%} dodaj nowy {% endif %} artykuł</h1>
+            </div>
+            <div class="col-sm-7">
+                <button type="button" class="pull-right">podgląd artykułu</button>
+            </div>
+        </div>
+        <hr>
+        <div class="col-lg-12 no_paddings">
+            <div class="col-lg-6">
+                {{ article_form.title|as_crispy_field }}
+            </div>
+            <div class="col-lg-6">
+                {{ article_form.subtitle|as_crispy_field }}
+            </div>
+            <div class="col-lg-6">
+                {{ article_form.section|as_crispy_field }}
+            </div>
+            <div class="col-lg-6">
+                {{ article_form.tags|as_crispy_field }}
+            </div>
+            <div class="col-lg-2">
+                {{ article_form.cover|as_crispy_field }}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <hr>
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-2">
+                    <button type="button" class="" data-toggle="modal" data-target="#paragraphModal">dodaj kolumnę</button>
+                    {% include "modals/paragraph_modal.html" %}
+                </div>
+                <div class="col-lg-2">
+                    <button type="button" class="" data-toggle="modal" data-target="#imageModal">dodaj obraz</button>
+                </div>
+                <div class="col-lg-2">
+                    <button type="button" class="" data-toggle="modal" data-target="#quoteModal">dodaj cytat</button>
+                    {% include "modals/quote_modal.html" %}
+                </div>
+                <div class="col-lg-2">
+                    <button type="button" class="" data-toggle="modal" data-target="#videoModal">dodaj wideo</button>
+                    {% include "modals/video_modal.html" %}
+                </div>
+
+            </div>
+        </div>
+        <div class="col-sm-12 no_paddings"><hr></div>
+        <div class="col-lg-6 ">
+            <div class="">
+                <ul id="sortable" class="articleSkeleton">
+                    {% if idk %}
+                        {% for component in article.components.all %}
+                            <li id='{{component.id}}' class="ui-state-default component_li">
+                                <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                                {{component.header}}
+                                <button class="pull-right editButton" type="button">Edytuj</button>
+                                <button class="pull-right deleteButton" type="button">Usuń</button>
+                                <input name="component_idk" value="{{component.id}}" type="hidden">
+                                <input class="component_position" name="component_position" value="{{component.position}}" type="hidden">
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <hr>
+    <button class="pull-right" type="submit">Zapisz artykuł</button>
+
+    <input type="hidden" id="idk" name="variable" value="{{idk}}">
+    </form>
+</div>
+{% include "modals/image_modal.html" %}
+
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/article_creator.js' %}"></script>
+{% endblock %}

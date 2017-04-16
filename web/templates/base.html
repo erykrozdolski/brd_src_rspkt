@@ -1,0 +1,34 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|Quicksand" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,300,400,600,900i&amp;subset=latin-ext" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+</head>
+<body>
+
+    <div>
+        {% include "main_nav.html" %}
+    </div>
+    <div class="container">
+        <div class="col-sm-12">
+        {% block content %}
+        {% endblock %}
+        </div>
+    </div>
+    <footer>
+        <hr>
+    </footer>
+</body>
+{% block js %}
+{% endblock %}
+<script src="{% static 'js/base.js' %}"></script>
+</html>

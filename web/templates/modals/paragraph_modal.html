@@ -1,0 +1,28 @@
+{% load crispy_forms_tags %}
+<div id="paragraphModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">dodaj kolumnę</h4>
+      </div>
+      <div class="modal-body">
+          <div>
+            <label for="title">Tytuł kolumny</label>
+          </div>
+          <div class="mb10">
+             <input class="width100" id="title" type="text" name="" label="tytuł" require="required"
+                    placeholder="Dodaj nazwę używaną w trybie edycji">
+          </div>
+          <div>
+            <label class="block" for="id_quote">treść kolumny</label>
+            <textarea id="id_text" rows="4" cols="55" require="required" placeholder='Dodaj treść kolumny'></textarea>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button id="addParagraph" type="button" class="btn btn-default">dodaj kolumnę</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">anuluj</button>
+      </div>
+    </div>
+  </div>
+</div>

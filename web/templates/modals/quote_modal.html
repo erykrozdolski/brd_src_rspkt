@@ -1,0 +1,28 @@
+{% load crispy_forms_tags %}
+<div id="quoteModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">dodaj cytat</h4>
+      </div>
+      <div class="modal-body">
+          <div>
+            <label for="title">tytuł cytatu</label>
+          </div>
+          <div class="mb10">
+            <input class="width100" id="title" type="text" name="" label="tytuł"
+                   placeholder="Tytuł jest używany tylko w trybie edycji">
+          </div>
+          <div>
+            <label for="id_quote">treść cytatu</label>
+            <textarea maxlength="100" id="id_quote" rows="2" cols="55" label="cytat"></textarea>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button id="addQuote" type="button" class="btn btn-default">dodaj cytat</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">anuluj</button>
+      </div>
+    </div>
+  </div>
+</div>

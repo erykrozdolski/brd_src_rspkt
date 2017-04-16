@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+ <div class="row">
+    <div class="col-sm-12">
+        <div class="col-sm-8 centered">
+            <h1>administracja</h1>
+            <a class="btn btn-default" href="{% url 'article_creator' %}">dodaj artykuł</a>
+            <a class="btn btn-default" href="{% url 'article_list' %}">lista artykułów</a>
+            <a class="btn btn-default" href="{% url 'section_list' %}">działy</a>
+            <a class="btn btn-default" >moderatorzy</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

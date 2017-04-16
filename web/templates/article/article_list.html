@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load render_table from django_tables2 %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <h3>lista artykułów</h3>
+        <hr>
+        {% render_table articleTable %}
+
+    </div>
+</div>
+{% endblock %}

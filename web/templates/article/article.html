@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="col-sm-8 centered">
+            <h1>{{article.title}}</h1>
+            <h4>{{article.subtitle}}</h4>
+            <div>
+                <img class="centered articleImage" width="100%" src="/media/{{article.cover}}" alt="okładka" style="">
+            </div>
+            {% for component in components %}
+                {% if component.kind == 'text' %}
+                    <div class="articleParagraph"><p {% if forloop.counter == 1 %}class="leadParagraph"{% endif %}>{{component.text}}</p></div>
+                {% elif component.kind == 'quote' %}
+                    <div>
+                        <p class="articleQuote">{{component.quote}}</p>
+                    </div>
+                {% elif component.kind == 'image' %}
+                    <div>
+                        <img class="centered articleImage" width="100%" src="/media/{{component.image}}" alt="{{component.header}}" style="">
+                    </div>
+                {% elif component.kind == 'video' %}
+                    <div class="col-centered">
+                        <iframe width="560" height="315" src="{{component.url}}" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
