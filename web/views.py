@@ -11,7 +11,6 @@ from .tables import ArticleTable, SectionListTable
 from django_tables2 import RequestConfig
 import pdb
 
-
 def index(request):
     return render(request, 'base.html', {})
 
@@ -55,11 +54,9 @@ def articleCreator(request, idk=None):
                 component.position = position
                 component.save()
                 article.components.add(component)
-            article.save()
+                article.save()
             return redirect(reverse('article_view', kwargs={'idk': article.id}))
         else:
-
-            # Component.objects.update(manytomany=None).delete()
             article_form = ArticleForm(instance=article)
     else:
         article_form = ArticleForm(instance=article)
@@ -86,7 +83,6 @@ def articleCreatorOperations(request):
         idk = component.id
         response_data = {'success': True, 'idk': idk}
     else:
-        print(component_form.errors)
         response_data = {'success': False}
 
     return HttpResponse(json.dumps(response_data), content_type='application/json')
@@ -100,11 +96,20 @@ def articleView(request, idk=None):
     return render(request, 'article/article.html', {'article': article, 'components': components})
 
 
-def articlesList(request):
+def articleList(request):
     articleTable = ArticleTable(Article.objects.all())
     RequestConfig(request).configure(articleTable)
 
     return render(request, 'article/article_list.html', {'articleTable': articleTable})
+
+
+def articleListOperations(request):
+    idk = request.POST.get('idk', '')
+    if request.POST.get('cmd', '') == 'deleteArticle':
+        article = get_object_or_404(Article, pk=idk)
+        article.delete()
+    response_data = {'success': True}
+    return HttpResponse(json.dumps(response_data), content_type='application/json')
 
 
 def sectionListView(request):

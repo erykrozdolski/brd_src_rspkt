@@ -18,6 +18,7 @@ function postComponent(cmd, modal, input, kind){
     var header = $(modal.concat(" ", "#id_header")).val();
     var post_data = { 'cmd': cmd, 'idk': idk, 'header': header};
     post_data[kind] = componentData
+    post_data['kind'] = kind
     $.ajax({
         type: 'POST',
         url: ajax_url,

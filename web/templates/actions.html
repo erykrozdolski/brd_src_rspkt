@@ -1,0 +1,4 @@
+{% with idk=record.pk %}
+<a href="{% url 'article_creator' idk %}"><button type="button" class="btn editButton" value="Edytuj">Edytuj</button></a>
+<button type="button" class="btn deleteButton" value="Usuń" data-idk="{{record.pk}}">Usuń</button>
+{% endwith %}

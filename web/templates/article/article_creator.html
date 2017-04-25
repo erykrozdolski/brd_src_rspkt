@@ -60,7 +60,7 @@
                         {% for component in article.components.all %}
                             <li id='{{component.id}}' class="ui-state-default component_li">
                                 <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-                                {{component.header}}
+                                {{component.kind}} {{component.header}}
                                 <button class="pull-right editButton" type="button">Edytuj</button>
                                 <button class="pull-right deleteButton" type="button">Usuń</button>
                                 <input name="component_idk" value="{{component.id}}" type="hidden">

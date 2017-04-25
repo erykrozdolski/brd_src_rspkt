@@ -12,6 +12,9 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+    <link rel="stylesheet" href="{% static 'sweetalert2/dist/sweetalert2.css' %}">
+    <script src="{% static 'sweetalert2/dist/sweetalert2.min.js' %}"></script>
+
 </head>
 <body>
 
@@ -28,7 +31,9 @@
         <hr>
     </footer>
 </body>
+
 {% block js %}
 {% endblock %}
+
 <script src="{% static 'js/base.js' %}"></script>
 </html>

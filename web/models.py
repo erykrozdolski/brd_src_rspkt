@@ -16,10 +16,17 @@ class Article(models.Model):
     components = models.ManyToManyField('Component')
 
 
+component_kinds = (
+    ('image', 'obraz'),
+    ('quote', 'cytat'),
+    ('text', 'kolumna'),
+    ('video', 'film YT'),
+)
+
 class Component(models.Model):
     position = models.PositiveIntegerField(default=0, null=True, blank=True)
     header = models.CharField(max_length=50, blank=False, null=False)
-    kind = models.CharField(max_length=20, blank=False, null=False)
+    kind = models.CharField(max_length=20, blank=False, null=False, choices=component_kinds)
     image = models.ImageField(upload_to='web/media/images', null=True, blank=False)
     quote = models.CharField(max_length=100, null=True, blank=False)
     url = models.CharField(max_length=250, null=True, blank=False)

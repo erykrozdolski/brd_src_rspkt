@@ -40,7 +40,7 @@ class ImageForm(ModelForm):
         super(ImageForm, self).__init__(*args, **kwargs)
     class Meta:
         model = Component
-        fields = ('image', 'header')
+        fields = ('image', 'header', 'kind')
         widgets = {
             'header': TextInput(attrs={'class': 'width100', 'placeholder': "Tytuł jest używany tylko w trybie edycji"})
         }
@@ -52,7 +52,7 @@ class ParagraphForm(ModelForm):
         super(ParagraphForm, self).__init__(*args, **kwargs)
     class Meta:
         model = Component
-        fields = ('header', 'text')
+        fields = ('header', 'text', 'kind')
         widgets = {
             'header': TextInput(attrs={'class': 'width100','placeholder':"Tytuł jest używany tylko w trybie edycji"}),
             'text': Textarea(attrs={'placeholder':'Dodaj treść kolumny','id': 'id_text'})
@@ -67,7 +67,7 @@ class QuoteForm(ModelForm):
         super(QuoteForm, self).__init__(*args, **kwargs)
     class Meta:
         model = Component
-        fields = ('header', 'quote')
+        fields = ('header', 'quote', 'kind')
         widgets = {
             'header': TextInput(attrs={'class': 'width100','placeholder': "Tytuł jest używany tylko w trybie edycji"}),
             'quote': TextInput(attrs={'placeholder': 'Dodaj treść cytatu', 'id': 'id_quote', 'class': 'width100'}),
@@ -81,7 +81,7 @@ class VideoForm(ModelForm):
         super(VideoForm, self).__init__(*args, **kwargs)
     class Meta:
         model = Component
-        fields = ('header', 'url')
+        fields = ('header', 'url', 'kind')
         widgets = {
             'header': TextInput(attrs={'class': 'width100','placeholder':"Tytuł jest używany tylko w trybie edycji"}),
             'url': TextInput(attrs={'placeholder': 'Dodaj adres URL', 'id': 'id_video', 'class': 'width100'})

@@ -137,10 +137,6 @@ footer{
     margin-top:200px;
 }
 
-input[type="file"] {
-    display: inline !important;
-}
-
 label{
     margin-top: 5px;
 }
@@ -160,3 +156,8 @@ textarea {
 .url{}
 .image{}
 .quote{}
+
+.thumbnail{
+width:100px;
+height:100px;
+}
