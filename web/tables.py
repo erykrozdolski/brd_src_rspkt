@@ -15,10 +15,11 @@ class ArticleTable(tables.Table):
     cover = ImageColumn(A('cover'))
     title = tables.LinkColumn('article_view', args=[A('pk')])
     akcje = tables.TemplateColumn(template_name='actions.html')
+    checkbox = tables.CheckBoxColumn(verbose_name='', accessor='pk')
     class Meta:
         attrs = {'class': 'table'}
         exclude = ('tags', 'id')
-        sequence = ('cover', 'title', 'subtitle')
+        sequence = ('checkbox', 'cover', 'title', 'subtitle')
         model = Article
         empty_text = "Na ten moment nie dodano żadnych artykułów"
 
@@ -28,3 +29,4 @@ class SectionListTable(tables.Table):
         attr = {'class': 'table'}
         exclude = ('id',)
         model = Section
+        empty_text = "Na ten moment nie dodano żadnych działów"

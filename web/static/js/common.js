@@ -1,16 +1,18 @@
-function sweetPost(ajax_url, post_data, success_function){
+function sweetPost(ajax_url, post_data, success_function=undefined){
     $.ajax({
-        type: 'POST'
+        type: 'POST',
         url: ajax_url,
         data: post_data,
         dataType: 'json',
-        success: success_function(data){
-            if data.success {};
+        success: function (data){
+            if (data.success){
+                success_function();
+            }
         }
     })
 }
 
-function sweetAlert(title, text, confirm_text){
+function sweetAlert(title, text, confirm_text='Usuń', ajax_url=undefined, post_data=undefined, success_function=undefined){
   swal({
       title: title,
       text: text,
@@ -19,11 +21,27 @@ function sweetAlert(title, text, confirm_text){
       confirmButtonClass: "btn-danger",
       confirmButtonText: confirm_text,
       cancelButtonText: "Anuluj",
-      closeOnConfirm: false
-    },
-  function(){
-      sweetPost(ajax_url, post_data, success_function=undefined)
-  });
-}
+    }).then(function(isConfirm){
+    if (isConfirm){
+      sweetPost(ajax_url, post_data, success_function);
+    }
+  }
+)};
 
+function simplePost(url, post_data, success_function=none){
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: post_data,
+        dataType: 'json',
+        success: function (data) {
+            if (data.success){
+                success_function();
+            }
+        }
+    })
+};
 
+function capitalize(s){
+    return s[0].toUpperCase() + s.slice(1);
+};

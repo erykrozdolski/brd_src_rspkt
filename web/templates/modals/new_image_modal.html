@@ -1,0 +1,27 @@
+{% load crispy_forms_tags %}
+<div id="newImageModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="" method="post" id="new-image-form" enctype="multipart/form-data"  onsubmit="event.preventDefault()"> {% csrf_token %}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">dodaj obraz</h4>
+        </div>
+        <div class="modal-body">
+          <div>
+            <span class="width100">{{image_upload_form.header|as_crispy_field}}</span>
+          </div>
+          <div class="mt10">
+              {{image_upload_form.image|as_crispy_field}}
+          </div>
+          <input class="hidden" value="addImage" name="cmd">
+          <input class="hidden" value="image" name="kind">
+        </div>
+        <div class="modal-footer">
+          <button type="submit" id='addImage'>dodaj obraz</button>
+          <button type="button" class="" data-dismiss="modal">anuluj</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

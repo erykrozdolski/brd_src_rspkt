@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'twitter_bootstrap',
     'django_tables2',
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [
@@ -127,3 +128,6 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
 WEB_NAME = 'brd_src_rspkt'
+
+THUMBNAIL_DEBUG = True
+

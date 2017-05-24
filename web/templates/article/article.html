@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load thumbnail %}
 {% block content %}
 <div class="row">
     <div class="col-sm-12">
@@ -6,7 +7,9 @@
             <h1>{{article.title}}</h1>
             <h4>{{article.subtitle}}</h4>
             <div>
-                <img class="centered articleImage" width="100%" src="/media/{{article.cover}}" alt="okładka" style="">
+                {% thumbnail article.cover "500x500" crop="center" as img %}
+                    <img class="centered articleImage" src="{{ img.url }}" width="{{ img.width }}" height="{{ img.height }} alt="okładka"">
+                {% endthumbnail %}
             </div>
             {% for component in components %}
                 {% if component.kind == 'text' %}
@@ -17,7 +20,9 @@
                     </div>
                 {% elif component.kind == 'image' %}
                     <div>
-                        <img class="centered articleImage" width="100%" src="/media/{{component.image}}" alt="{{component.header}}" style="">
+                        {% thumbnail component.image "500x500" crop="center" as img %}
+                            <img src="{{ img.url }}" width="{{ img.width }}" height="{{ img.height }}">
+                        {% endthumbnail %}
                     </div>
                 {% elif component.kind == 'video' %}
                     <div class="col-centered">

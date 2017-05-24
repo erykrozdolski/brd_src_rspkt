@@ -34,10 +34,6 @@ def user_login(request):
 
 
 def articleCreator(request, idk=None):
-    image_upload_form = ImageForm()
-    quoteForm = QuoteForm()
-    videoForm = VideoForm()
-    paragraphForm = ParagraphForm()
     if not idk:
         article = Article()
     else:
@@ -64,26 +60,78 @@ def articleCreator(request, idk=None):
     return render(request, 'article/article_creator.html', {'article_form': article_form,
                                                             'article': article,
                                                             'idk': article.id,
-                                                            'image_upload_form': image_upload_form,
-                                                            'videoForm': videoForm,
-                                                            'paragraphForm': paragraphForm,
-                                                            'quoteForm': quoteForm})
+                                                            'image_upload_form': ImageForm(),
+                                                            'videoForm': VideoForm(),
+                                                            'paragraphForm': ParagraphForm(),
+                                                            'quoteForm': QuoteForm(),
+                                                            })
 
-def articleCreatorOperations(request):
-    if request.POST.get('cmd', '') == 'addImage':
-        component_form = ImageForm(data=request.POST, files=request.FILES, initial={'kind': 'image'})
-    elif request.POST.get('cmd', '') == 'addParagraph':
-        component_form = ParagraphForm(data=request.POST, initial={'kind': 'text'})
-    elif request.POST.get('cmd', '') == 'addQuote':
-        component_form = QuoteForm(data=request.POST, initial={'kind': 'quote'})
-    elif request.POST.get('cmd', '') == 'addVideo':
-        component_form = VideoForm(data=request.POST, initial={'kind': 'video'})
-    if component_form.is_valid():
-        component = component_form.save()
-        idk = component.id
-        response_data = {'success': True, 'idk': idk}
+
+def set_component_form(request, kind, component=None):
+    if kind == 'image':
+        form = ImageForm(instance=component, data=request.POST, files=request.FILES, initial={'kind': 'image'})
+    elif kind == 'text':
+        form = ParagraphForm(instance=component, data=request.POST, initial={'kind': 'text'})
+    elif kind == 'quote':
+        form = QuoteForm(instance=component, data=request.POST, initial={'kind': 'quote'})
+    elif kind == 'url':
+        form = VideoForm(instance=component, data=request.POST, initial={'kind': 'url'})
     else:
-        response_data = {'success': False}
+        raise AttributeError
+    return form
+
+
+
+def add_article_component(request):
+    response_data = {'success': False}
+    if request.POST:
+        kind = request.POST.get('kind')
+        component_form = set_component_form(request, kind)
+        if component_form.is_valid():
+            component = component_form.save()
+            idk = component.id
+            kind = component.get_kind_display()
+            response_data = {'success': True, 'idk': idk, 'kind': kind}
+
+    return HttpResponse(json.dumps(response_data), content_type='application/json')
+
+
+def edit_article_component(request):
+    response_data = {'success': False}
+    if request.POST:
+        idk = request.POST.get('idk', '')
+        cmd = request.POST.get('cmd', '')
+        if cmd == 'before_edit':
+            component = get_object_or_404(Component, pk=idk)
+            header = component.header
+            component_data = getattr(component, component.kind)
+            modal = '#edit{}Modal'.format(component.kind.capitalize())
+            input_el = '#id_{}'.format(component.kind)
+            response_data = {'success': True, 'header': header, 'modal': modal, 'component_data': component_data,
+                             'input_el': input_el}
+        else:
+            kind = request.POST.get('kind')
+            component = get_object_or_404(Component, pk=idk)
+            component_form = set_component_form(request, kind, component)
+            if component_form.is_valid():
+                component_form.save()
+                response_data = {'success': True}
+            else:
+                print(component_form.errors)
+                response_data = {'success': False}
+            print(component.text)
+
+    return HttpResponse(json.dumps(response_data), content_type='application/json')
+
+
+def delete_article_component(request):
+    response_data = {'success': False}
+    if request.POST:
+        idk = request.POST.get('idk', '')
+        if idk:
+            component = get_object_or_404(Component, pk=idk)
+            component.delete()
+            response_data = {'success': True}
 
     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
@@ -105,16 +153,16 @@ def articleList(request):
 
 def articleListOperations(request):
     idk = request.POST.get('idk', '')
-    if request.POST.get('cmd', '') == 'deleteArticle':
+    if request.POST:
         article = get_object_or_404(Article, pk=idk)
         article.delete()
+
     response_data = {'success': True}
     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
 
 def sectionListView(request):
     sectionListTable = SectionListTable(Section.objects.all())
-    RequestConfig(request).configure(sectionListTable)
     return render(request, 'section.html', {'sectionListTable': sectionListTable})
 
 

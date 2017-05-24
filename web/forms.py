@@ -84,7 +84,7 @@ class VideoForm(ModelForm):
         fields = ('header', 'url', 'kind')
         widgets = {
             'header': TextInput(attrs={'class': 'width100','placeholder':"Tytuł jest używany tylko w trybie edycji"}),
-            'url': TextInput(attrs={'placeholder': 'Dodaj adres URL', 'id': 'id_video', 'class': 'width100'})
+            'url': TextInput(attrs={'placeholder': 'Dodaj adres URL', 'id': 'id_url', 'class': 'width100'})
         }
         labels = {'header': 'tytuł video',
                   'url': 'adres URL'}

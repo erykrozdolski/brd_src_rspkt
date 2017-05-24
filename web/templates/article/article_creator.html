@@ -38,16 +38,16 @@
         <div class="col-lg-12">
             <div class="row">
                 <div class="col-lg-2">
-                    <button type="button" class="" data-toggle="modal" data-target="#paragraphModal">dodaj kolumnę</button>
+                    <button type="button" class="" data-toggle="modal" data-target="#newParagraphModal">dodaj kolumnę</button>
                 </div>
                 <div class="col-lg-2">
-                    <button type="button" class="" data-toggle="modal" data-target="#imageModal">dodaj obraz</button>
+                    <button type="button" class="" data-toggle="modal" data-target="#newImageModal">dodaj obraz</button>
                 </div>
                 <div class="col-lg-2">
-                    <button type="button" class="" data-toggle="modal" data-target="#quoteModal">dodaj cytat</button>
+                    <button type="button" class="" data-toggle="modal" data-target="#newQuoteModal">dodaj cytat</button>
                 </div>
                 <div class="col-lg-2">
-                    <button type="button" class="" data-toggle="modal" data-target="#videoModal">dodaj wideo</button>
+                    <button type="button" class="" data-toggle="modal" data-target="#newUrlModal">dodaj wideo</button>
                 </div>
 
             </div>
@@ -60,10 +60,10 @@
                         {% for component in article.components.all %}
                             <li id='{{component.id}}' class="ui-state-default component_li">
                                 <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-                                {{component.kind}} {{component.header}}
-                                <button class="pull-right editButton" type="button">Edytuj</button>
-                                <button class="pull-right deleteButton" type="button">Usuń</button>
-                                <input name="component_idk" value="{{component.id}}" type="hidden">
+                                {{component.get_kind_display}} {{component.header}}
+                                <button class="pull-right editComponent" type="button" data-toggle="modal" data-target="#edit{{component.kind |capfirst}}Modal">Edytuj</button>
+                                <button class="pull-right deleteComponent" type="button">Usuń</button>
+                                <input class="component_idk" name="component_idk" value="{{component.id}}" type="hidden">
                                 <input class="component_position" name="component_position" value="{{component.position}}" type="hidden">
                             </li>
                         {% endfor %}
@@ -79,16 +79,19 @@
     <input type="hidden" id="idk" name="variable" value="{{idk}}">
     </form>
 </div>
-{% include "modals/image_modal.html" %}
-{% include "modals/paragraph_modal.html" %}
-{% include "modals/quote_modal.html" %}
-{% include "modals/video_modal.html" %}
+{% include "modals/new_image_modal.html" %}
+{% include "modals/new_paragraph_modal.html" %}
+{% include "modals/new_quote_modal.html" %}
+{% include "modals/new_url_modal.html" %}
+{% include "modals/edit_image_modal.html" %}
+{% include "modals/edit_paragraph_modal.html" %}
+{% include "modals/edit_quote_modal.html" %}
+{% include "modals/edit_url_modal.html" %}
 
 
 
 
 {% endblock %}
-
 {% block js %}
     <script src="{% static 'js/article_creator.js' %}"></script>
 {% endblock %}

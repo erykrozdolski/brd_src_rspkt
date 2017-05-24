@@ -2,6 +2,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
+from sorl.thumbnail import ImageField
 
 class Article(models.Model):
     title = models.CharField(max_length=100, default='', blank=False, null=False, verbose_name='tytuł')
@@ -12,7 +13,7 @@ class Article(models.Model):
     status = models.CharField(max_length=100, default="created", verbose_name='status')
     tags = models.CharField(max_length=100, null=True, blank=True, verbose_name='tagi')
     section = models.ForeignKey('Section', null=True, blank=True, verbose_name='dział')
-    cover = models.ImageField(upload_to='web/media/covers', null=True, blank=False, verbose_name='okładka')
+    cover = ImageField(upload_to='web/media/covers', null=True, blank=False, verbose_name='okładka')
     components = models.ManyToManyField('Component')
 
 
@@ -20,14 +21,14 @@ component_kinds = (
     ('image', 'obraz'),
     ('quote', 'cytat'),
     ('text', 'kolumna'),
-    ('video', 'film YT'),
+    ('url', 'film YT'),
 )
 
 class Component(models.Model):
     position = models.PositiveIntegerField(default=0, null=True, blank=True)
     header = models.CharField(max_length=50, blank=False, null=False)
     kind = models.CharField(max_length=20, blank=False, null=False, choices=component_kinds)
-    image = models.ImageField(upload_to='web/media/images', null=True, blank=False)
+    image = ImageField(upload_to='web/media/images', null=True, blank=False)
     quote = models.CharField(max_length=100, null=True, blank=False)
     url = models.CharField(max_length=250, null=True, blank=False)
     text = models.TextField(null=True, blank=False)
