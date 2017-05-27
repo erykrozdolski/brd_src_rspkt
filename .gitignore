@@ -1,2 +1,5 @@
 /web/media
-/web/__pycache__
+web/__pycache__
+/cache
+.idea/workspace.xml
+*.pyc 

@@ -53,7 +53,7 @@ def articleCreator(request, idk=None):
                 article.save()
             return redirect(reverse('article_view', kwargs={'idk': article.id}))
         else:
-            article_form = ArticleForm(instance=article)
+            article_form = ArticleForm(instance=article, files=request.FILES)
     else:
         article_form = ArticleForm(instance=article)
 

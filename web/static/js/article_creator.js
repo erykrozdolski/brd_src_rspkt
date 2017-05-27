@@ -19,16 +19,18 @@ $( "#sortable" ).disableSelection();
 function add_component_success(data, header, modal, kind){
     $('.articleSkeleton').append(component_li);
     let component_last_li = $('.articleSkeleton li:last-child')
-    component_last_li.html(span+data.kind+' '+header+edit_button.replace('empty_target','#edit' + capitalize(kind) + 'Modal')+delete_button+'</li>')
+    component_last_li.html(span+data.kind+' '+"<span class='header_name'>"+header+"</span>"+edit_button.replace('empty_target','#edit' + capitalize(kind) + 'Modal')+delete_button+'</li>')
     component_last_li.attr('id', data.idk);
     component_last_li.append("<input class='component_idk' type='hidden' name='component_idk'"+'value='+data.idk+'>');
     component_last_li.append(component_position_input);
     $(modal).modal('hide');
 }
 
-function edit_component_success(data, header, modal,input, componentData){
+function edit_component_success(data, header, modal,kind, input, componentData,idk){
     $(modal.concat(" ","#id_header")).val(header);
     $(modal.concat(" ",input)).val(componentData);
+    $(    '#'+idk+' '+'.header_name').val(header);
+    console.log($(    '#'+idk+' '+'.header_name').text(header));
     $(modal).modal('hide');
 }
 
@@ -45,7 +47,7 @@ function postComponent(url, modal, input, kind, success_function=none){
         dataType: 'json',
         success: function (data) {
             if (data.success){
-                success_function(data, header, modal, kind, input, componentData);
+                success_function(data, header, modal, kind, input, componentData,idk);
             }
         }
     });
@@ -109,7 +111,7 @@ $('#editVideo').click(function(){
 
 $('#addImage').click(function(){
     var data = new FormData($('#new-image-form').get(0));
-    var header = $('#id_header').val();
+    var header = "<span class='header_name'>"+$('#id_header').val()+"</span>";
     $.ajax({
         url: add_url,
         type: 'POST',
@@ -130,6 +132,10 @@ $('#addImage').click(function(){
     }});
 });
 
+
+$('#editImage').click(function(){
+
+});
 
 $('#article_form').submit(function() {
     $("#sortable .component_position").each(function() {

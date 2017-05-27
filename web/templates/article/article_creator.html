@@ -25,9 +25,6 @@
             <div class="col-lg-6">
                 {{ article_form.section|as_crispy_field }}
             </div>
-            <div class="col-lg-6">
-                {{ article_form.tags|as_crispy_field }}
-            </div>
             <div class="col-lg-2">
                 {{ article_form.cover|as_crispy_field }}
             </div>
@@ -54,13 +51,22 @@
         </div>
         <div class="col-sm-12 no_paddings"><hr></div>
         <div class="col-lg-6 ">
+            <div class="html_templates">
+                <li id="" class="ui-state-default component_li ui-sortable-handle">
+                    <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                    <button class="pull-right editComponent" type="button" data-toggle="modal" data-target="">Edytuj</button>
+                    <button class="pull-right deleteComponent" type="button">Usuń</button>
+                    <input class="component_idk" name="component_idk" value="" type="hidden">
+                    <input class="component_position" name="component_position" value="" type="hidden">
+                </li>
+            </div>
             <div class="">
                 <ul id="sortable" class="articleSkeleton">
                     {% if idk %}
                         {% for component in article.components.all %}
                             <li id='{{component.id}}' class="ui-state-default component_li">
                                 <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-                                {{component.get_kind_display}} {{component.header}}
+                                {{component.get_kind_display}} <span class="header_name">{{component.header}}</span>
                                 <button class="pull-right editComponent" type="button" data-toggle="modal" data-target="#edit{{component.kind |capfirst}}Modal">Edytuj</button>
                                 <button class="pull-right deleteComponent" type="button">Usuń</button>
                                 <input class="component_idk" name="component_idk" value="{{component.id}}" type="hidden">

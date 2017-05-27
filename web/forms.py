@@ -1,4 +1,4 @@
-from django.forms import ModelForm, ModelChoiceField, ImageField, CharField, URLField, Form, PasswordInput, FileField, Textarea, TextInput, Select
+from django.forms import ModelForm,FileInput, ModelChoiceField, ImageField, CharField, URLField, Form, PasswordInput, FileField, Textarea, TextInput, Select
 from .models import Article, Section, Component
 from crispy_forms.helper import FormHelper
 
@@ -21,12 +21,13 @@ class ArticleForm(ModelForm):
     class Meta:
         model = Article
         widgets = {
+            'cover': FileInput(),
             'title': TextInput(attrs={'class': 'width100'}),
             'subtitle': TextInput(attrs={'class': 'width100'}),
             'tags': TextInput(attrs={'class': 'width100'}),
-            'section': Select(attrs={'class': 'width100'})
+            'section': Select(attrs={'class': 'width100'}),
         }
-        fields = ('title', 'subtitle', 'tags', 'section','cover')
+        fields = ('title', 'subtitle', 'section','cover')
 
         labels = {'title': 'tytuł',
                   'subtitle': 'podtytuł',

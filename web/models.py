@@ -4,6 +4,7 @@ from django.db import models
 from django.utils import timezone
 from sorl.thumbnail import ImageField
 
+
 class Article(models.Model):
     title = models.CharField(max_length=100, default='', blank=False, null=False, verbose_name='tytuł')
     subtitle = models.CharField(max_length=150, default='', blank=False, null=False, verbose_name='podtytuł')
@@ -13,8 +14,10 @@ class Article(models.Model):
     status = models.CharField(max_length=100, default="created", verbose_name='status')
     tags = models.CharField(max_length=100, null=True, blank=True, verbose_name='tagi')
     section = models.ForeignKey('Section', null=True, blank=True, verbose_name='dział')
-    cover = ImageField(upload_to='web/media/covers', null=True, blank=False, verbose_name='okładka')
+    cover = ImageField(upload_to='web/media/covers', null=True, blank=True, verbose_name='okładka')
     components = models.ManyToManyField('Component')
+
+
 
 
 component_kinds = (

@@ -11,3 +11,10 @@ def web_name():
 @register.simple_tag
 def base_dir():
     return settings.BASE_DIR
+
+
+@register.filter(name='embed_url')
+def embed_url(url):
+    return url.replace("watch?v=", "embed/")
+
+embed_url.is_safe = True

@@ -1,14 +1,15 @@
 from .models import Article, Section
 import django_tables2 as tables
 from django_tables2.utils import A
-
+from sorl.thumbnail import get_thumbnail
 from django.utils.safestring import mark_safe
 from django.utils.html import escape
 
 
 class ImageColumn(tables.LinkColumn):
     def render(self, value):
-        return mark_safe('<img class="thumbnail" src="/media/{}"/>'.format(escape(value)))
+        tn = get_thumbnail(value, '100x100', crop='center', quality=99)
+        return mark_safe('<img class="thumbnail" src="/media/{}"/>'.format(escape(tn)))
 
 
 class ArticleTable(tables.Table):
@@ -17,7 +18,7 @@ class ArticleTable(tables.Table):
     akcje = tables.TemplateColumn(template_name='actions.html')
     checkbox = tables.CheckBoxColumn(verbose_name='', accessor='pk')
     class Meta:
-        attrs = {'class': 'table'}
+        attrs = {'class': 'admin_table', 'id': "article_table"}
         exclude = ('tags', 'id')
         sequence = ('checkbox', 'cover', 'title', 'subtitle')
         model = Article
