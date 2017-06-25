@@ -2,4 +2,9 @@
 web/__pycache__
 /cache
 .idea/workspace.xml
-*.pyc 
+*.pyc
+
+.sass-cache/
+node_modules/
+
+*.map

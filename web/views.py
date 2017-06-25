@@ -55,7 +55,7 @@ def articleCreator(request, idk=None):
         else:
             article_form = ArticleForm(instance=article, files=request.FILES)
     else:
-        article_form = ArticleForm(instance=article)
+        article_form = ArticleForm(request.POST or None, request.FILES or None, instance=article)
 
     return render(request, 'article/article_creator.html', {'article_form': article_form,
                                                             'article': article,
@@ -104,7 +104,10 @@ def edit_article_component(request):
         if cmd == 'before_edit':
             component = get_object_or_404(Component, pk=idk)
             header = component.header
-            component_data = getattr(component, component.kind)
+            if component.kind == 'image':
+                component_data = ''
+            else:
+                component_data = getattr(component, component.kind)
             modal = '#edit{}Modal'.format(component.kind.capitalize())
             input_el = '#id_{}'.format(component.kind)
             response_data = {'success': True, 'header': header, 'modal': modal, 'component_data': component_data,
@@ -117,9 +120,7 @@ def edit_article_component(request):
                 component_form.save()
                 response_data = {'success': True}
             else:
-                print(component_form.errors)
                 response_data = {'success': False}
-            print(component.text)
 
     return HttpResponse(json.dumps(response_data), content_type='application/json')
 

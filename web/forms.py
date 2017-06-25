@@ -21,7 +21,7 @@ class ArticleForm(ModelForm):
     class Meta:
         model = Article
         widgets = {
-            'cover': FileInput(),
+            'cover': FileInput(attrs={'class': 'hidden', 'id': 'loadCover'}),
             'title': TextInput(attrs={'class': 'width100'}),
             'subtitle': TextInput(attrs={'class': 'width100'}),
             'tags': TextInput(attrs={'class': 'width100'}),
@@ -43,6 +43,7 @@ class ImageForm(ModelForm):
         model = Component
         fields = ('image', 'header', 'kind')
         widgets = {
+            'image': FileInput(attrs={'class': 'hidden', 'id': 'changeImage'}),
             'header': TextInput(attrs={'class': 'width100', 'placeholder': "Tytuł jest używany tylko w trybie edycji"})
         }
         labels = {'header': 'tytuł grafiki',
