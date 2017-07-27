@@ -9,15 +9,16 @@ from django.utils.html import escape
 class ImageColumn(tables.LinkColumn):
     def render(self, value):
         tn = get_thumbnail(value, '100x100', crop='center', quality=99)
-        return mark_safe('<img class="thumbnail" src="/media/{}"/>'.format(escape(tn)))
+        return mark_safe('<img class="thumbnail" src="{}"/>'.format(escape(tn.url)))
 
 
 class ArticleTable(tables.Table):
-    cover = ImageColumn(A('cover'))
+    cover = ImageColumn(A('cover'),verbose_name='grafika')
     title = tables.LinkColumn('article_view', args=[A('pk')])
     akcje = tables.TemplateColumn(template_name='actions.html')
     checkbox = tables.CheckBoxColumn(verbose_name='', accessor='pk')
     class Meta:
+
         attrs = {'class': 'admin_table', 'id': "article_table"}
         exclude = ('tags', 'id')
         sequence = ('checkbox', 'cover', 'title', 'subtitle')
@@ -26,6 +27,7 @@ class ArticleTable(tables.Table):
 
 
 class SectionListTable(tables.Table):
+    name = tables.Column(verbose_name='nazwa')
     class Meta:
         attr = {'class': 'table'}
         exclude = ('id',)

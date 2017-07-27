@@ -1,0 +1,34 @@
+{% load thumbnail %}
+{% load custom_tags %}
+<div class="row">
+    {% for article in articles %}
+        {% if forloop.first %}
+            <div class="row">
+        {% endif %}
+        <a href="{% url 'article_view' idk=article.pk %}">
+            <div class="article_thumbnail {% if forloop.first %}col-sm-7{% elif forloop.counter == 2  %} col-sm-5{% elif forloop.counter <= 5 %} col-sm-4 no_paddings{%else%}col-sm-3 no_paddings{%endif%}">
+                <div class="col-sm-12">
+                    {% thumbnail article.cover "350x250" crop="center" as img %}
+                    <img class="centered articleImage" src="{{ img.url }}" width="100%" alt='okładka'>
+                    {% endthumbnail %}
+                    <div class="title_on_image article_title">
+                        <h2 class="doppleganger_title">{{article.title}}</h2>
+                        <h2>{{article.title}}</h2>
+                    </div>
+                </div>
+                <div class="col-sm-12 article_title">
+                    <div class="main_title_square right"></div>
+
+                </div>
+                <div class="col-sm-12 ">
+                    <div class="article_subtitile">
+                        {{ article.subtitle }}
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% if forloop.counter == 2 %}
+                </div>
+        {% endif %}
+    {% endfor %}
+</div>

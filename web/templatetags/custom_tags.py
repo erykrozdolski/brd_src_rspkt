@@ -18,3 +18,12 @@ def embed_url(url):
     return url.replace("watch?v=", "embed/")
 
 embed_url.is_safe = True
+
+
+@register.simple_tag
+def if_in_list(value, string_list):
+    my_list = string_list.split(',')
+    string_list.split()
+    if value in my_list:
+        return True
+    return False

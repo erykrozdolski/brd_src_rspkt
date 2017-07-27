@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .forms import ArticleForm, LoginForm, ImageForm, VideoForm, QuoteForm, ParagraphForm
+from .forms import ArticleForm, LoginForm, ImageForm, VideoForm, QuoteForm, ParagraphForm, SectionForm
 from .handlers import *
 from .models import Component, Article, Section
 from django.contrib.auth import authenticate, login
@@ -12,7 +12,8 @@ from django_tables2 import RequestConfig
 import pdb
 
 def index(request):
-    return render(request, 'base.html', {})
+    articles = Article.objects.all()[0:9]
+    return render(request, 'base.html', {'articles': articles})
 
 
 def user_login(request):
@@ -139,10 +140,13 @@ def delete_article_component(request):
 
 def articleView(request, idk=None):
     article = get_object_or_404(Article, pk=idk)
+    articles = Article.objects.all()
     if article.components:
         components = article.components.all().order_by('position')
 
-    return render(request, 'article/article.html', {'article': article, 'components': components})
+    return render(request, 'article/article.html', {'article': article,
+                                                    'components': components,
+                                                    'articles': articles,})
 
 
 def articleList(request):
@@ -164,12 +168,19 @@ def articleListOperations(request):
 
 def sectionListView(request):
     sectionListTable = SectionListTable(Section.objects.all())
-    return render(request, 'section.html', {'sectionListTable': sectionListTable})
+    section_form = SectionForm()
+    return render(request, 'section_list.html', {'section_form': section_form,
+                                                 'sectionListTable': sectionListTable})
 
-
-def administration(request):
-    return render(request, 'administration.html', {})
 
 def test(request):
     return render(request, 'test.html', {})
 
+from django.http import HttpResponse
+from django.core import serializers
+
+
+def myModel_asJson(request):
+    object_list = Article.objects.all()
+    json = serializers.serialize('json', object_list)
+    return HttpResponse(json, content_type='application/json')

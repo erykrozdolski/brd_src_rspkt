@@ -1,0 +1,27 @@
+{
+  "name": "brd_src_rspkt",
+  "description": "web for webs",
+  "main": "base.html",
+  "authors": [
+    "Eryk Rozdolski <erykrozdolski@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/erykrozdolski/brd_src_rspkt",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-sass": "^3.3.7",
+    "bootstrap": "^3.3.7",
+    "jquery-ui": "^1.12.1",
+    "select2": "^4.0.3",
+    "sweetalert2": "^6.6.6"
+  },
+  "resolutions": {
+    "bootstrap": "v4.0.0-alpha.6"
+  }
+}

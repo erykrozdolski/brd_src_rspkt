@@ -10,10 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
+
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+PROJECT_ROOT = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), ".."),
+)
 
 
 # Quick-start development settings - unsuitable for production
@@ -42,6 +47,7 @@ INSTALLED_APPS = [
     'twitter_bootstrap',
     'django_tables2',
     'sorl.thumbnail',
+    'djangobower',
 ]
 
 MIDDLEWARE = [
@@ -120,9 +126,6 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.10/howto/static-files/
-
 STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
@@ -130,4 +133,23 @@ MEDIA_URL = '/media/'
 WEB_NAME = 'brd_src_rspkt'
 
 THUMBNAIL_DEBUG = True
+
+BOWER_COMPONENTS_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))+'/bower/'
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'djangobower.finders.BowerFinder',
+)
+
+BOWER_INSTALLED_APPS = (
+    'jquery',
+    'bootstrap',
+    'jquery-ui',
+    'select2',
+    'tether',
+    'animate.css',
+    'ckeditor',
+    'bootstrap-sass',
+)
 

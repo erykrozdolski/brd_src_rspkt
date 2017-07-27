@@ -139,9 +139,6 @@ $('#addImage').click(function(){
     }});
 });
 
-$('#editImage').click(function()){
-
-}
 
 
 function fillEditedImage(clicked){

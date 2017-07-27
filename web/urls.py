@@ -13,12 +13,14 @@ urlpatterns = [
     url(r'^article_view/(?P<idk>[0-9]+)?/$', views.articleView, name='article_view'),
     url(r'^article_list/$', views.articleList, name='article_list'),
     url(r'^article_list/ajax/$', views.articleListOperations, name='article_list_ajax'),
-    url(r'^administration/$', views.administration, name='administration'),
     url(r'^section/(?P<section_name>)/$', views.sectionListView, name='section_view'),
     url(r'^section_list/$', views.sectionListView, name='section_list'),
-    url(r'^test/$', views.test)
+    url(r'^test/$', views.test),
 ]
 
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+
