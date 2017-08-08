@@ -153,3 +153,4 @@ BOWER_INSTALLED_APPS = (
     'bootstrap-sass',
 )
 
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

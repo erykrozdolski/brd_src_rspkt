@@ -4,20 +4,17 @@
 {% block content %}
 <div class="row">
     <div class="row">
-        <div class="col-sm-10">
+        <div class="col-sm-12">
             <div class="article_title">
-            <div class="col-sm-1">
-                <div class="title_square"></div>
-            </div>
-            <div class="col-sm-10">
+                <h2>
+                    <span class="title_square left"></span>
+                    {{article.title}}
+                    <span class="title_square right"></span>
+                </h2>
                 <h2 class="doppleganger_title">{{article.title}}</h2>
-                <h2>{{article.title}}</h2>
-            </div>
-            <div class="col-sm-1">
-                <div class="title_square"></div>
             </div>
         </div>
-        <div class="col-sm-7 col-sm-offset-2">
+        <div class="col-sm-7 col-sm-offset-1">
             <div>
                 {% thumbnail article.cover "710x500" crop="center" as img %}
                     <img class="centered articleImage" src="{{ img.url }}" width="100%" alt="okładka"">
@@ -41,17 +38,16 @@
                     </div>
                 {% elif component.kind == 'url' %}
                     <div class="col-centered">
-                        <iframe width="560" height="315" src="{{component.url|embed_url|safe}}" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="auto" src="{{component.url|embed_url|safe}}" frameborder="0" allowfullscreen></iframe>
                     </div>
                 {% endif %}
             {% endfor %}
-            </div>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-4">
             {% for article in articles %}
                 <a href="{% url 'article_view' idk=article.pk %}">
-                    <div class="row">
-                        <div class="row">
+                    <div class="col-sm-12">
+                        <div class="">
                             {% thumbnail article.cover "350x250" crop="center" as img %}
                             <img class="centered articleImage" src="{{ img.url }}" width="100%" alt='okładka'>
                             {% endthumbnail %}

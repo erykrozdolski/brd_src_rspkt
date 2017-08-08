@@ -150,6 +150,8 @@ def articleView(request, idk=None):
 
 
 def articleList(request):
+
+
     articleTable = ArticleTable(Article.objects.all())
     RequestConfig(request).configure(articleTable)
 
@@ -169,6 +171,9 @@ def articleListOperations(request):
 def sectionListView(request):
     sectionListTable = SectionListTable(Section.objects.all())
     section_form = SectionForm()
+    if request.is_ajax():
+        response_data = {'success': True}
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
     return render(request, 'section_list.html', {'section_form': section_form,
                                                  'sectionListTable': sectionListTable})
 
@@ -176,9 +181,10 @@ def sectionListView(request):
 def test(request):
     return render(request, 'test.html', {})
 
+
+
 from django.http import HttpResponse
 from django.core import serializers
-
 
 def myModel_asJson(request):
     object_list = Article.objects.all()

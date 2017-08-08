@@ -2864,28 +2864,28 @@ fieldset[disabled] a.btn {
     background-color: #333; }
 
 .btn-primary {
-  color: #fff;
-  background-color: #000;
-  border-color: black; }
+  color: #000;
+  background-color: #fff;
+  border-color: #000; }
   .btn-primary:focus, .btn-primary.focus {
-    color: #fff;
-    background-color: black;
+    color: #000;
+    background-color: #e6e5e5;
     border-color: black; }
   .btn-primary:hover {
-    color: #fff;
-    background-color: black;
+    color: #000;
+    background-color: #e6e5e5;
     border-color: black; }
   .btn-primary:active, .btn-primary.active,
   .open > .btn-primary.dropdown-toggle {
-    color: #fff;
-    background-color: black;
+    color: #000;
+    background-color: #e6e5e5;
     border-color: black; }
     .btn-primary:active:hover, .btn-primary:active:focus, .btn-primary:active.focus, .btn-primary.active:hover, .btn-primary.active:focus, .btn-primary.active.focus,
     .open > .btn-primary.dropdown-toggle:hover,
     .open > .btn-primary.dropdown-toggle:focus,
     .open > .btn-primary.dropdown-toggle.focus {
-      color: #fff;
-      background-color: black;
+      color: #000;
+      background-color: #d4d4d4;
       border-color: black; }
   .btn-primary:active, .btn-primary.active,
   .open > .btn-primary.dropdown-toggle {
@@ -2894,11 +2894,11 @@ fieldset[disabled] a.btn {
   fieldset[disabled] .btn-primary:hover,
   fieldset[disabled] .btn-primary:focus,
   fieldset[disabled] .btn-primary.focus {
-    background-color: #000;
-    border-color: black; }
+    background-color: #fff;
+    border-color: #000; }
   .btn-primary .badge {
-    color: #000;
-    background-color: #fff; }
+    color: #fff;
+    background-color: #000; }
 
 .btn-success {
   color: #fff;
@@ -5855,8 +5855,8 @@ body {
 
 .visual_key {
   background-image: url("../images/brdsrcrspkt_visual_key.png");
-  background-size: 100% auto;
-  background-repeat: no-repeat;
+  background-repeat: repeat-x;
+  background-size: 50% auto;
   height: 80px;
   width: 100%; }
 
@@ -5872,7 +5872,7 @@ p {
   font-style: regular;
   font-weight: 300;
   text-align: justify;
-  max-width: 88ch;
+  word-break: break-all;
   font-size: 16px; }
 
 .comma {
@@ -5894,11 +5894,14 @@ iframe {
 
 .articleParagraph {
   margin-top: 20px;
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+  word-wrap: break-word; }
 
 .articleQuote {
   font-family: 'Gloria';
-  font-size: 28px; }
+  font-size: 28px;
+  margin-top: 25px;
+  margin-bottom: 25px; }
 
 .leadParagraph {
   font-style: regular;
@@ -5989,8 +5992,13 @@ textarea {
 .title_square {
   background-color: #000;
   height: 20px;
-  width: 50px;
-  margin-top: 25px; }
+  margin-top: 11px;
+  position: absolute;
+  width: 60px; }
+  .title_square.left {
+    margin-left: -65px; }
+  .title_square.right {
+    right: 0; }
 
 .title_on_image {
   background-color: rgba(255, 255, 255, 0.6);
@@ -6013,13 +6021,13 @@ textarea {
 
 #circle {
   background-color: black;
-  border-radius: 0.6vw;
+  border-radius: 0.3vw;
   float: right;
-  height: 1.2vw;
-  margin-right: 4vw;
-  margin-top: 2.8vw;
+  margin-right: 4.35vw;
+  margin-top: 1.45vw;
   position: relative;
-  width: 1.2vw;
+  width: 0.6vw;
+  height: 0.6vw;
   text-decoration: none; }
   #circle:hover {
     background-color: #ff3c38; }
@@ -6036,10 +6044,10 @@ textarea {
 
 .doppleganger_title {
   font-family: "RobotoSlabBold";
-  color: #eee;
-  margin-top: -20px;
+  color: #c2c2c2;
+  margin-top: 0px;
   position: absolute;
-  top: 51px;
+  top: 60px;
   z-index: -1000; }
 
 .starting_quotes, .ending_quotes {
@@ -6052,7 +6060,7 @@ textarea {
   margin-top: -126px; }
 
 .ending_quotes {
-  margin-left: 695px;
+  margin-left: 845px;
   margin-top: -163px; }
 
 .article_thumbnail.col-sm-7 h2 {
@@ -6076,3 +6084,6 @@ textarea {
 
 .btn-primary {
   font-family: "Roboto_Condensed_Bold"; }
+
+h2 {
+  font-size: 40px !important; }

@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^article_list/$', views.articleList, name='article_list'),
     url(r'^article_list/ajax/$', views.articleListOperations, name='article_list_ajax'),
     url(r'^section/(?P<section_name>)/$', views.sectionListView, name='section_view'),
-    url(r'^section_list/$', views.sectionListView, name='section_list'),
+    url(r'^administration/section_list/$', views.sectionListView, name='section_list'),
     url(r'^test/$', views.test),
 ]
 

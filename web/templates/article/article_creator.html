@@ -15,16 +15,16 @@
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-3">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newParagraphModal">dodaj kolumnę</button>
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#newParagraphModal">dodaj kolumnę</button>
                         </div>
                         <div class="col-lg-3">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newImageModal">dodaj obraz</button>
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#newImageModal">dodaj obraz</button>
                         </div>
                         <div class="col-lg-3">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newQuoteModal">dodaj cytat</button>
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#newQuoteModal">dodaj cytat</button>
                         </div>
                         <div class="col-lg-3">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newUrlModal">dodaj wideo</button>
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#newUrlModal">dodaj wideo</button>
                         </div>
                     </div>
                 </div>
@@ -43,8 +43,8 @@
                 {% endthumbnail %}
                 <div class="col-sm-12">
                 <hr>
-                <button type="button" class="pull-right">podgląd artykułu</button>
-                <button class="pull-right" type="submit">Zapisz artykuł</button>
+                <button type="button" class="btn btn-default pull-right">podgląd artykułu</button>
+                <button class="btn btn-default pull-right" type="submit">Zapisz artykuł</button>
             </div>
             </div>
             <div class="col-lg-6">
@@ -56,8 +56,8 @@
                                 <li id="" class="ui-state-default component_li ui-sortable-handle">
                                     <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
                                     <span class="header_name"></span>
-                                    <button class="pull-right editComponent" type="button" data-toggle="modal" data-target="">Edytuj</button>
-                                    <button class="pull-right deleteComponent" type="button">Usuń</button>
+                                    <button class="btn btn-default pull-right editComponent" type="button" data-toggle="modal" data-target="">Edytuj</button>
+                                    <button class="btn btn-default pull-right deleteComponent" type="button">Usuń</button>
                                     <input class="component_idk" type="hidden">
                                     <input class="component_position"  value="" type="hidden">
                                 </li>
@@ -72,8 +72,8 @@
                                         <li id='{{component.id}}' class="ui-state-default component_li">
                                             <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
                                             {{component.get_kind_display}} <span class="header_name">{{component.header}}</span>
-                                            <button class="{% if component.kind == 'image' %} editImage {% else %} editComponent  {% endif%} pull-right" type="button" data-toggle="modal" data-target="#edit{{component.kind |capfirst}}Modal">Edytuj</button>
-                                            <button class="pull-right deleteComponent" type="button">Usuń</button>
+                                            <button class="btn btn-default{% if component.kind == 'image' %} editImage {% else %} editComponent  {% endif%} pull-right" type="button" data-toggle="modal" data-target="#edit{{component.kind |capfirst}}Modal">Edytuj</button>
+                                            <button class="btn btn-default pull-right deleteComponent" type="button">Usuń</button>
                                             <input class="component_idk" name="component_idk" value="{{component.id}}" type="hidden">
                                             <input class="component_position" name="component_position" value="{{component.position}}" type="hidden">
                                         </li>
