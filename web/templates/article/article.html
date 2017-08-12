@@ -2,7 +2,7 @@
 {% load thumbnail %}
 {% load custom_tags %}
 {% block content %}
-<div class="row">
+<div class="container">
     <div class="row">
         <div class="col-sm-12">
             <div class="article_title">
@@ -38,12 +38,12 @@
                     </div>
                 {% elif component.kind == 'url' %}
                     <div class="col-centered">
-                        <iframe width="100%" height="auto" src="{{component.url|embed_url|safe}}" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="" height="" src="{{component.url|embed_url|safe}}" frameborder="0" allowfullscreen></iframe>
                     </div>
                 {% endif %}
             {% endfor %}
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-offset-1 col-sm-3">
             {% for article in articles %}
                 <a href="{% url 'article_view' idk=article.pk %}">
                     <div class="col-sm-12">
@@ -52,13 +52,15 @@
                             <img class="centered articleImage" src="{{ img.url }}" width="100%" alt='okładka'>
                             {% endthumbnail %}
                         </div>
-                        <div class="row article_title">
+                        <div class="row article_mini_title">
                             <div class="main_title_square right"></div>
-                            <h2 class="doppleganger_title">{{article.title}}</h2>
-                            <h2>{{article.title}}</h2>
+                            <div class="col-sm-12">
+                                <h4 class="doppleganger_mini_title">{{article.title}}</h4>
+                                <h4>{{article.title}}</h4>
+                            </div>
                         </div>
                         <div class="row">
-                            <div class="article_subtitile">
+                            <div class="col-sm-12 article_subtitile">
                                 {{ article.subtitle }}
                             </div>
                         </div>

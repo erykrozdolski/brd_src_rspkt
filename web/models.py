@@ -39,4 +39,6 @@ class Component(models.Model):
 
 class Section(models.Model):
     name = models.CharField(max_length=100)
+    cover = ImageField(upload_to='web/media/covers', null=True, blank=True, verbose_name='okładka')
+
 

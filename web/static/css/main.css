@@ -6013,8 +6013,7 @@ textarea {
   width: 25px;
   position: absolute; }
   .main_title_square.right {
-    left: -15px;
-    top: 15px; }
+    left: -35px; }
   .main_title_square.left {
     right: -15px;
     top: 15px; }
@@ -6036,11 +6035,23 @@ textarea {
 
 .article_title {
   font-family: "RobotoSlabBold";
+  margin-bottom: 40px;
   color: #000; }
+  .article_title h2 {
+    padding: 10px; }
+
+.article_mini_title {
+  font-family: "RobotoSlabBold";
+  margin-bottom: 0px;
+  color: #000; }
+  .article_mini_title h2 {
+    padding: 10px; }
 
 .article_subtitle {
   font-family: "RobotoSlabBold";
-  color: #000; }
+  color: #000;
+  font-size: 18px;
+  text-align: justify; }
 
 .doppleganger_title {
   font-family: "RobotoSlabBold";
@@ -6048,6 +6059,13 @@ textarea {
   margin-top: 0px;
   position: absolute;
   top: 60px;
+  z-index: -1000; }
+
+.doppleganger_mini_title {
+  font-family: "RobotoSlabBold";
+  color: #c2c2c2;
+  margin-top: -10px;
+  position: absolute;
   z-index: -1000; }
 
 .starting_quotes, .ending_quotes {
@@ -6060,17 +6078,17 @@ textarea {
   margin-top: -126px; }
 
 .ending_quotes {
-  margin-left: 845px;
+  margin-left: 736px;
   margin-top: -163px; }
 
 .article_thumbnail.col-sm-7 h2 {
   font-size: 40px; }
 
 .article_thumbnail.col-sm-5 h2 {
-  font-size: 35px; }
+  font-size: 30px; }
 
 .article_thumbnail.col-sm-4 h2 {
-  font-size: 25px; }
+  font-size: 20px; }
 
 .article_thumbnail.col-sm-3 h2 {
   font-size: 15px; }
@@ -6085,5 +6103,6 @@ textarea {
 .btn-primary {
   font-family: "Roboto_Condensed_Bold"; }
 
-h2 {
-  font-size: 40px !important; }
+iframe {
+  width: 100%;
+  height: 56.25%; }

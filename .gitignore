@@ -1,7 +1,7 @@
 node_modules
 npm-debug.log
 tmp
-.idea/workspace.xml
+idea/workspace.xml
 Gruntfile.js
 Makefile
 db.sqlite3
@@ -15,6 +15,9 @@ package.json
 tasks/
 test/
 sass/
+
+*.sqlite3
+migrations/
 db.sqlite3
 .idea/
 bower/
