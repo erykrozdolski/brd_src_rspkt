@@ -19,3 +19,13 @@ $('.article_table').click(function(event) {
         });
     }
 });
+
+
+$("#search_in_articles").click(function(){
+    var search_form = $('#search_form');
+    $.post('/article_list/ajax', search_form.serialize(),
+        function (data) {
+            $('#article_list').html(data);
+        }
+    );
+});

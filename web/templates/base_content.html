@@ -2,7 +2,7 @@
 {% load custom_tags %}
 <div class="row">
     {% for article in articles %}
-        <a href="{% url 'article_view' idk=article.pk %}">
+        <a href="{% url 'article_details' idk=article.pk %}">
             <div class="article_thumbnail {% if forloop.first %}col-sm-7{% elif forloop.counter == 2  %} col-sm-5{% elif forloop.counter <= 5 %} col-sm-4 no_paddings{%else%}col-sm-3 no_paddings{%endif%}">
                 <div class="col-sm-12">
                     {% thumbnail article.cover "350x250" crop="center" as img %}

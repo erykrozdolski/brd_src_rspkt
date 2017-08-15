@@ -1,15 +1,12 @@
 from django.shortcuts import render
-from .forms import ArticleForm, LoginForm, ImageForm, VideoForm, QuoteForm, ParagraphForm, SectionForm
+from .forms import ArticleForm, LoginForm, ImageForm, VideoForm, QuoteForm, ParagraphForm, CategoryForm
 from .handlers import *
-from .models import Component, Article, Section
+from .models import Component, Article, Category
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 import json
 from django.core.urlresolvers import reverse
-from .tables import ArticleTable, SectionListTable
-from django_tables2 import RequestConfig
-import pdb
 
 def index(request):
     articles = Article.objects.all()[0:9]
@@ -51,8 +48,9 @@ def articleCreator(request, idk=None):
                 component.position = position
                 component.save()
                 article.components.add(component)
+                article.author = request.user
                 article.save()
-            return redirect(reverse('article_view', kwargs={'idk': article.id}))
+            return redirect(reverse('article_details', kwargs={'idk': article.id}))
         else:
             article_form = ArticleForm(instance=article, files=request.FILES)
     else:
@@ -138,7 +136,7 @@ def delete_article_component(request):
     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
 
-def articleView(request, idk=None):
+def articleDetails(request, idk=None):
     article = get_object_or_404(Article, pk=idk)
     articles = Article.objects.all()
     if article.components:
@@ -150,12 +148,11 @@ def articleView(request, idk=None):
 
 
 def articleList(request):
-
-
-    articleTable = ArticleTable(Article.objects.all())
-    RequestConfig(request).configure(articleTable)
-
-    return render(request, 'article/article_list.html', {'articleTable': articleTable})
+    from web.forms import SearchArticleForm
+    article_list = Article.objects.all()
+    search_form = SearchArticleForm()
+    return render(request, 'article/article_list.html', {'article_list': article_list,
+                                                         'search_form': search_form})
 
 
 def articleListOperations(request):
@@ -168,25 +165,36 @@ def articleListOperations(request):
     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
 
-def sectionListView(request):
-    sectionListTable = SectionListTable(Section.objects.all())
-    section_form = SectionForm()
+
+
+def categoryList(request):
+    category_list = Category.objects.all()
+    category_form = CategoryForm()
     if request.is_ajax():
         response_data = {'success': True}
         return HttpResponse(json.dumps(response_data), content_type='application/json')
-    return render(request, 'section_list.html', {'section_form': section_form,
-                                                 'sectionListTable': sectionListTable})
+    return render(request, 'category_list.html', {'category_form': category_form,
+                                                 'category_list': category_list})
 
 
-def test(request):
-    return render(request, 'test.html', {})
+def articleListAjax(request):
+    all_offers = Article.objects.all().exclude(jobTitle='staż/ praktyki')
+    filtered_articles = Article.objects.all()
+    post_data = request.POST.dict()
+    del post_data['csrfmiddlewaretoken']
+    if 'search' in post_data:
+        if post_data['search']:
+            phrase = post_data['search']
+            del post_data['search']
+            filtered_articles = Article.objects.none()
+            fields = ['company_size',  'description', 'jobTitle', 'neighbourhood','category', 'benefits',
+                      'remote_job', 'requirements', 'seniority_level', 'town', 'working_hours']
+            for field in fields:
+                qs = all_offers.filter(**{field + '__icontains': phrase})
+                filtered_offers = filtered_offers | qs
+    for key in post_data:
+        if post_data[key]:
+            values_list = request.POST.getlist(key)
+            filtered_offers = filtered_offers.filter(**{key + '__in': values_list})
 
-
-
-from django.http import HttpResponse
-from django.core import serializers
-
-def myModel_asJson(request):
-    object_list = Article.objects.all()
-    json = serializers.serialize('json', object_list)
-    return HttpResponse(json, content_type='application/json')
+    return render(request, 'offers/article_results.html', {'article_list': filtered_articles.distinct()})

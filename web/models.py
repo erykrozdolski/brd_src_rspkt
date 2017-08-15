@@ -10,13 +10,22 @@ class Article(models.Model):
     subtitle = models.CharField(max_length=150, default='', blank=False, null=False, verbose_name='podtytuł')
     author = models.ForeignKey(User, null=True, blank=True, verbose_name='autor')
     created = models.DateTimeField(auto_now_add=True, verbose_name='utworzony')
-    published = models.DateTimeField(default=timezone.now, verbose_name='opublikowany')
+    published = models.DateTimeField(null=True, blank=True, verbose_name='opublikowany')
+    is_published = models.BooleanField(default=False, verbose_name="czy opublikowany")
     status = models.CharField(max_length=100, default="created", verbose_name='status')
     tags = models.CharField(max_length=100, null=True, blank=True, verbose_name='tagi')
-    section = models.ForeignKey('Section', null=True, blank=True, verbose_name='dział')
+    category = models.ForeignKey('Category', null=True, blank=True, verbose_name='dział')
     cover = ImageField(upload_to='web/media/covers', null=True, blank=True, verbose_name='okładka')
     components = models.ManyToManyField('Component')
 
+    def publish(self):
+        self.published = timezone.now()
+        self.is_published = True
+        return
+
+    def unpublish(self):
+        self.published = ''
+        self.is_published = False
 
 
 
@@ -37,8 +46,6 @@ class Component(models.Model):
     text = models.TextField(null=True, blank=False)
 
 
-class Section(models.Model):
+class Category(models.Model):
     name = models.CharField(max_length=100)
     cover = ImageField(upload_to='web/media/covers', null=True, blank=True, verbose_name='okładka')
-
-

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-lg-5">
+                <h3>lista działów</h3>
+            </div>
+            <div class="col-sm-7">
+                <button id="add_new_category" data-toggle="modal" data-target="#newCategoryModal" type="button" class="pull-right">dodaj dział</button>
+            </div>
+        </div>
+        <hr>
+        <table>
+            <thead>
+                <tr>
+                    <td>okładka</td>
+                    <td>nazwa</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in category_list %}
+                    <tr>
+                        <td>
+                            {% thumbnail category.cover "350x250" crop="center" as img %}
+                            <img class="centered categoryListCover" src="{{ img.url }}" width="100%" alt='okładka'>
+                            {% endthumbnail %}
+                        </td>
+                        <td>{{category.name}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% include "modals/new_category_modal.html" %}
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/category_list.js' %}"></script>
+{% endblock %}

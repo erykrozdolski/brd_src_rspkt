@@ -1,5 +1,5 @@
-from django.forms import ModelForm,FileInput, ModelChoiceField, ImageField, CharField, URLField, Form, PasswordInput, FileField, Textarea, TextInput, Select
-from .models import Article, Section, Component
+from django.forms import Form, DateField,ModelForm,FileInput, ModelChoiceField, ImageField, CharField, URLField, Form, ChoiceField, PasswordInput, FileField, Textarea, TextInput, Select
+from .models import Article, Category, Component
 from crispy_forms.helper import FormHelper
 
 class LoginForm(Form):
@@ -11,7 +11,6 @@ class ArticleForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ArticleForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.section = ModelChoiceField(queryset=Section.objects.all(), label="dział")
 
     def clean_title(self):
         title = self.cleaned_data['title']
@@ -25,20 +24,35 @@ class ArticleForm(ModelForm):
             'title': TextInput(attrs={'class': 'width100 form-control'}),
             'subtitle': TextInput(attrs={'class': 'width100 form-control'}),
             'tags': TextInput(attrs={'class': 'width100 form-control'}),
-            'section': Select(attrs={'class': 'width100 form-control'}),
+            'category': Select(attrs={'class': 'width100 form-control'}, choices=Category.objects.all()),
         }
-        fields = ('title', 'subtitle', 'section','cover')
+        fields = ('title', 'subtitle', 'category','cover')
 
         labels = {'title': 'tytuł',
                   'subtitle': 'podtytuł',
-                  'section': 'dział',
+                  'category': 'dział',
                   'cover': 'okładka',
                   'tags': 'tagi'}
 
 
+class SearchArticleForm(Form):
+    def __init__(self, *args, **kwargs):
+        super(SearchArticleForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+
+
+    title = CharField(label='tytuł',required=False)
+    author = CharField(label='autor',required=False)
+    subtitle = CharField(label='podtytuł',required=False)
+    published = ChoiceField(label='opublikowany',required=False)
+    is_published = DateField(label='data publikacji',required=False)
+    created = DateField(label='data utworzenia',required=False)
+    category = ChoiceField(label='kategoria',required=False)
+
 class ImageForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ImageForm, self).__init__(*args, **kwargs)
+
     class Meta:
         model = Component
         fields = ('image', 'header', 'kind')
@@ -48,6 +62,7 @@ class ImageForm(ModelForm):
         }
         labels = {'header': 'tytuł grafiki',
                   'image': '<button class="btn btn-default">wybierz obraz z dysku</button>'}
+
 
 class ParagraphForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -92,11 +107,11 @@ class VideoForm(ModelForm):
                   'url': 'adres URL'}
 
 
-class SectionForm(ModelForm):
+class CategoryForm(ModelForm):
     def __init__(self, *args, **kwargs):
-        super(SectionForm, self).__init__(*args, **kwargs)
+        super(CategoryForm, self).__init__(*args, **kwargs)
     class Meta:
-        model = Section
+        model = Category
         fields = '__all__'
         widgets = {
             'name': TextInput(attrs={'class': 'width100 form-control'})

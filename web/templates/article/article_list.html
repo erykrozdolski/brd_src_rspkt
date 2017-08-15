@@ -1,13 +1,93 @@
 {% extends "base.html" %}
-{% load render_table from django_tables2 %}
 {% block content %}
+{% load thumbnail %}
 {% load static %}
+{% load crispy_forms_tags %}
 <div class="row">
     <div class="col-sm-12">
-        <h3>lista artykułów</h3>
+        <div class="row">
+            <div class="col-sm-9">
+                <h3>lista artykułów</h3>
+            </div>
+            <div class="col-sm-3">
+                <a href="{% url 'article_creator' %}" class="btn btn-primary">dodaj artykuł</a>
+            </div>
+        </div>
         <hr>
-        {% render_table articleTable %}
-        {% csrf_token %}
+        <div class="row">
+            <form action="">
+                <div class="row">
+                    {% csrf_token %}
+                    <div class="col-md-4">
+                        {{ search_form.title|as_crispy_field }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ search_form.subtitle|as_crispy_field }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ search_form.author|as_crispy_field }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ search_form.created|as_crispy_field }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ search_form.published|as_crispy_field }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ search_form.category|as_crispy_field }}
+                    </div>
+
+
+
+                </div>
+                <div class="row">
+                    <button id='search_in_articles' type="button" class="btn btn-primary">Wyszukaj</button>
+                    <button type="button" class="btn btn-default">wyszukiwanie zaawansowane</button>
+                    <button type="button" class="btn btn-default">wyczyść filtry</button>
+                </div>
+            </form>
+        </div>
+        <hr>
+        <table>
+            <thead>
+                <tr>
+                    <td>okładka</td>
+                    <td>tytuł</td>
+                    <td>podtytuł</td>
+                    <td>autor</td>
+                    <td>data utworzenia</td>
+                    <td>data publikacji</td>
+                    <td>status</td>
+                    <td>kategoria</td>
+                    <td>akcje</td>
+                </tr>
+            </thead>
+            <tbody id="article_list">
+                {% for article in article_list %}
+                    <tr>
+                        <td>
+                            {% thumbnail article.cover "350x250" crop="center" as img %}
+                            <img class="centered articleListCover" src="{{ img.url }}" width="100%" alt='okładka'>
+                            {% endthumbnail %}
+                        </td>
+                        <td>{{article.title}}</td>
+                        <td>{{article.subtitle}}</td>
+                        <td>{{article.author}}</td>
+                        <td>{{article.created}}</td>
+                        <td>{{article.published}}</td>
+                        <td>{{article.state}}</td>
+                        <td>{{article.category}}</td>
+                        <td>
+                            <button id="publicate" class="btn btn-default">Opublikuj</button>
+                            <a href="{% url 'article_creator' idk=article.pk %}" class="btn btn-default">Edytuj</a>
+                            <button id="remove" class="btn btn-default">Usuń</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+
     </div>
 </div>
 {% endblock %}

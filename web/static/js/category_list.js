@@ -7,7 +7,7 @@ function postComponent(url, modal, input, kind, success_function=none){
 
 $('#addSection').click(function(){
     var post_data = {};
-    $.post('/administration/section_list/', post_data, function(data){
+    $.post('/administration/category_list/', post_data, function(data){
 
     });
 });

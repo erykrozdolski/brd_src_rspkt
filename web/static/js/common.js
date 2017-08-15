@@ -1,3 +1,5 @@
+$('select').select2();
+
 function sweetPost(ajax_url, post_data, success_function=undefined){
     $.ajax({
         type: 'POST',
