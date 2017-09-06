@@ -12,6 +12,8 @@
             <span class="width100">{{image_upload_form.header|as_crispy_field}}</span>
           </div>
           <div class="mt10">
+              <label for="changeImage" class="btn btn-default">Wybierz obraz z dysku</label>
+
               {{image_upload_form.image|as_crispy_field}}
           </div>
           <input class="hidden" value="addImage" name="cmd">

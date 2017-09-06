@@ -1,12 +1,27 @@
-{% for article in article_list %}
+{% load thumbnail %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% if article_list %}
+<thead>
     <tr>
-        <td>{{article.cover}}</td>
-        <td>{{article.title}}</td>
-        <td>{{article.subtitle}}</td>
-        <td>{{article.author}}</td>
-        <td>{{article.created}}</td>
-        <td>{{article.published}}</td>
-        <td>{{article.state}}</td>
-        <td>{{article.category}}</td>
+        <td>okładka</td>
+        <td>tytuł</td>
+        <td>podtytuł</td>
+        <td>autor</td>
+        <td>data utworzenia</td>
+        <td>data publikacji</td>
+        <td>status</td>
+        <td>kategoria</td>
+        <td>akcje</td>
     </tr>
+</thead>
+<tbody>
+{% endif %}
+
+{% for article in article_list %}
+    {% include 'article/article_results.html' %}
+{% empty %}
+        Brak wyników o podanych parametrach.
+
 {% endfor %}
+</tbody>

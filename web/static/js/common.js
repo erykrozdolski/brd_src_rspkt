@@ -1,4 +1,5 @@
 $('select').select2();
+$('.dateinput').datepicker();
 
 function sweetPost(ajax_url, post_data, success_function=undefined){
     $.ajax({
@@ -6,15 +7,15 @@ function sweetPost(ajax_url, post_data, success_function=undefined){
         url: ajax_url,
         data: post_data,
         dataType: 'json',
-        success: function (data){
-            if (data.success){
-                success_function();
-            }
+        complete: function(post_data){
+            success_function(post_data);
         }
+
     })
 }
 
 function sweetAlert(title, text, confirm_text='Usuń', ajax_url=undefined, post_data=undefined, success_function=undefined){
+
   swal({
       title: title,
       text: text,
@@ -24,13 +25,14 @@ function sweetAlert(title, text, confirm_text='Usuń', ajax_url=undefined, post_
       confirmButtonText: confirm_text,
       cancelButtonText: "Anuluj",
     }).then(function(isConfirm){
+
     if (isConfirm){
       sweetPost(ajax_url, post_data, success_function);
     }
   }
 )};
 
-function simplePost(url, post_data, success_function=none){
+function simplePost(url, post_data, success_function=function(){}){
     $.ajax({
         type: 'POST',
         url: url,
@@ -38,7 +40,7 @@ function simplePost(url, post_data, success_function=none){
         dataType: 'json',
         success: function (data) {
             if (data.success){
-                success_function();
+                success_function(data);
             }
         }
     })

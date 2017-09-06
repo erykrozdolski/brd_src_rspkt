@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-lg-5">
+                <h3>lista działów</h3>
+            </div>
+            <div class="col-sm-7">
+                <a href="{% url 'category_details' %}" id="add_new_category" type="button" class="btn btn-primary pull-right">dodaj dział</a>
+            </div>
+        </div>
+        <hr>
+        <table id="category_table">
+            <thead>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>okładka</td>
+                    <td>nazwa</td>
+                    <td>akcje</td>
+                </tr>
+            </thead>
+            <tbody id='category_list'>
+                {% for category in category_list %}
+                    <tr id="{{category.pk}}">
+                        <td>
+                            <input type="checkbox">
+                        </td>
+                        <td>
+                            {% thumbnail category.cover "100x100" crop="center" as img %}
+                            <img class="centered categoryListCover" src="{{ img.url }}" alt='okładka'>
+                            {% endthumbnail %}
+                        </td>
+                        <td>{{category.name}}</td>
+                        <td>
+                            <a href="{% url 'category_details' idk=category.pk %}"   class="btn btn-default" data-toggle="modal" data-idk="{{category.pk}}">Edytuj</a>
+                            <button class="delete_category btn btn-default" data-idk="{{category.pk}}">Usuń</button>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td>
+                            <h3>nie dodano żadnych działów</h3>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% include "modals/new_category_modal.html" %}
+{% include "modals/edit_category_modal.html" %}
+
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/category_list.js' %}"></script>
+{% endblock %}

@@ -3,7 +3,7 @@
 {% load thumbnail %}
 {% load static %}
 {% load crispy_forms_tags %}
-<div class="row">
+<div class="">
     <div class="col-sm-12">
         <div class="row">
             <div class="col-sm-9">
@@ -14,44 +14,47 @@
             </div>
         </div>
         <hr>
-        <div class="row">
-            <form action="">
+        <form id="search_form" action="">
+            <div class="">
                 <div class="row">
                     {% csrf_token %}
+                    <div class="col-md-4">
+                        <label>&nbsp;</label>
+                        {{ search_form.search|as_crispy_field }}
+                    </div>
                     <div class="col-md-4">
                         {{ search_form.title|as_crispy_field }}
                     </div>
                     <div class="col-md-4">
-                        {{ search_form.subtitle|as_crispy_field }}
-                    </div>
-                    <div class="col-md-4">
-                        {{ search_form.author|as_crispy_field }}
-                    </div>
-                    <div class="col-md-4">
-                        {{ search_form.created|as_crispy_field }}
-                    </div>
-                    <div class="col-md-4">
-                        {{ search_form.published|as_crispy_field }}
-                    </div>
-                    <div class="col-md-4">
                         {{ search_form.category|as_crispy_field }}
                     </div>
-
-
-
                 </div>
-                <div class="row">
-                    <button id='search_in_articles' type="button" class="btn btn-primary">Wyszukaj</button>
-                    <button type="button" class="btn btn-default">wyszukiwanie zaawansowane</button>
-                    <button type="button" class="btn btn-default">wyczyść filtry</button>
+                <div class="row" id="advanced_fields">
+                    <div class="col-md-4">
+                        {{ search_form.subtitle|as_crispy_field }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ search_form.author|as_crispy_field }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ search_form.created|as_crispy_field }}
+                    </div>
+                    <div class="col-md-2">
+                        {{ search_form.published|as_crispy_field }}
+                    </div>
                 </div>
-            </form>
-        </div>
+            </div>
+            <div class="">
+                <button id='search_in_articles' type="button" class="btn btn-primary">Wyszukaj</button>
+                <button id='advanced_searching' type="button" class="btn btn-default">wyszukiwanie zaawansowane</button>
+                <button id='clear_search_form' type="button" class="btn btn-default">wyczyść filtry</button>
+            </div>
+        </form>
         <hr>
-        <table>
+        <table id="article_list">
             <thead>
                 <tr>
-                    <td>okładka</td>
+                    <td>podgląd</td>
                     <td>tytuł</td>
                     <td>podtytuł</td>
                     <td>autor</td>
@@ -62,13 +65,15 @@
                     <td>akcje</td>
                 </tr>
             </thead>
-            <tbody id="article_list">
+            <tbody>
                 {% for article in article_list %}
                     <tr>
                         <td>
+                            <a href="{% url 'article_details' idk=article.pk %}">
                             {% thumbnail article.cover "350x250" crop="center" as img %}
                             <img class="centered articleListCover" src="{{ img.url }}" width="100%" alt='okładka'>
                             {% endthumbnail %}
+                            </a>
                         </td>
                         <td>{{article.title}}</td>
                         <td>{{article.subtitle}}</td>
@@ -78,16 +83,17 @@
                         <td>{{article.state}}</td>
                         <td>{{article.category}}</td>
                         <td>
-                            <button id="publicate" class="btn btn-default">Opublikuj</button>
+                            <button class="btn btn-default trigger_article" data-idk="{{article.pk}}"
+                                    data-trigger="{% if article.is_published %} unpublish_article {% else %} publish_article {% endif %}">
+                                {% if article.is_published %} Ukryj {% else %} Opublikuj {% endif %}
+                            </button>
                             <a href="{% url 'article_creator' idk=article.pk %}" class="btn btn-default">Edytuj</a>
-                            <button id="remove" class="btn btn-default">Usuń</button>
+                            <button class="btn btn-default delete_article" data-idk="{{article.pk}}">Usuń</button>
                         </td>
                     </tr>
                 {% endfor %}
-
             </tbody>
         </table>
-
     </div>
 </div>
 {% endblock %}

@@ -4,7 +4,12 @@
 
 {% block content %}
 <h1>logowanie</h1>
+{% if form.errors %}
+ Nazwa użytkownika lub hasło są nieprawidłowe.
+ Spróbuj ponownie.
+{% else %}
 <p>Wypełnij poniższy formularz, aby się zalogować:</p>
+{% endif %}
 <form action="." method="post">
     {{ form.as_p }}
     {% csrf_token %}

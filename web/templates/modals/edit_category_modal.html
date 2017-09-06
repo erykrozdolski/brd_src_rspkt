@@ -1,24 +1,24 @@
 {% load crispy_forms_tags %}
-<div id="newCategoryModal" class="modal fade" role="dialog">
+<div id="editCategoryModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
-    <form action="" method="post" id="new-category-form" enctype="multipart/form-data"  onsubmit="event.preventDefault()">
+    <form action="" method="post" id="edit-category-form" enctype="multipart/form-data"  onsubmit="event.preventDefault()">
       {% csrf_token %}
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">dodaj kategorię</h4>
+          <h4 class="modal-title">edytuj kategorię</h4>
         </div>
         <div class="modal-body">
           <div class="row mt10">
             <div class="col-sm-12 ">
                 {{ category_form.name|as_crispy_field }}
                 {{ category_form.cover|as_crispy_field }}
-                <input class="hidden" value="add_category" name="cmd">
+                <input class="hidden" value="edit_category" name="cmd">
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button id="addCategory" type="submit">dodaj kategorię</button>
+          <button id="edit_category" type="submit">edytuj kategorię</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">anuluj</button>
         </div>
       </div>

@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^administration/article_creator/edit/$', views.edit_article_component, name='edit_article_component'),
     url(r'^administration/article_creator/delete/$', views.delete_article_component, name='delete_article_component'),
     url(r'^article_details/(?P<idk>[0-9]+)?/$', views.articleDetails, name='article_details'),
+    url(r'^category_details/(?P<idk>[0-9]+)?/$', views.category_details, name='category_details'),
     url(r'^article_list/$', views.articleList, name='article_list'),
     url(r'^article_list/ajax/$', views.articleListAjax, name='article_list_ajax'),
     url(r'^category/$', views.categoryList, name='category_list'),

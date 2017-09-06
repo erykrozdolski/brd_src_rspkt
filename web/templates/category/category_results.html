@@ -1,0 +1,24 @@
+{% load thumbnail %}
+{% for category in category_list %}
+    <tr id="{{category.pk}}">
+        <td>
+            <input type="checkbox">
+        </td>
+        <td>
+            {% thumbnail category.cover "100x100" crop="center" as img %}
+            <img class="centered categoryListCover" src="{{ img.url }}" alt='okładka'>
+            {% endthumbnail %}
+        </td>
+        <td>{{category.name}}</td>
+        <td>
+            <button class="edit_category btn btn-default" data-toggle="modal" data-target="#editCategoryModal"  data-idk="{{category.pk}}">Edytuj</button>
+            <button class="delete_category btn btn-default" data-idk="{{category.pk}}">Usuń</button>
+        </td>
+    </tr>
+{% empty %}
+    <tr>
+        <td>
+            <h3>nie dodano żadnych działów</h3>
+        </td>
+    </tr>
+{% endfor %}
