@@ -33,8 +33,6 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-# Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -48,6 +46,8 @@ INSTALLED_APPS = [
     'django_tables2',
     'sorl.thumbnail',
     'djangobower',
+    'tinymce',
+    'django_cleanup',
 ]
 
 MIDDLEWARE = [
@@ -112,9 +112,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/1.10/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -127,6 +124,8 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = '/static/'
 
 MEDIA_URL = '/media/'
 
@@ -149,10 +148,38 @@ BOWER_INSTALLED_APPS = (
     'select2',
     'tether',
     'animate.css',
-    'ckeditor',
-    'bootstrap-sass',
 )
 
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
-
 AUTH_USER_MODEL = 'web.User'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+TINYMCE_JS_URL = 'http://debug.example.org/tiny_mce/tiny_mce_src.js'
+TINYMCE_DEFAULT_CONFIG = {
+    'plugins': "table,spellchecker,paste,searchreplace",
+    'theme': "advanced",
+    'cleanup_on_startup': True,
+    'custom_undo_redo_levels': 10,
+}
+TINYMCE_SPELLCHECKER = True
+TINYMCE_COMPRESSOR = True
+TINYMCE_EXTRA_MEDIA = {
+    'css': {
+        'all': [
+            ...
+        ],
+    },
+    'js': [
+        ...
+    ],
+}
+
+
+LOGIN_URL = '/login/'
+
+try:
+    from local_settings import *
+except ImportError as e:
+    pass

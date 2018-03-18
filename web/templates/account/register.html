@@ -1,10 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load thumbnail %}
 
-</body>
-</html>
+{% block title %} Rejestracja {% endblock %}
+
+{% block content %}
+<div class="col-md-14 col-md-offset-1">
+
+<h1>rejestracja</h1>
+
+{% if user_form.errors %}
+ Nazwa użytkownika lub hasło są nieprawidłowe.
+ Spróbuj ponownie.
+{% else %}
+<p>Wypełnij poniższy formularz, aby się zarejestrować:</p>
+{% endif %}
+<form action="" method="post" enctype="multipart/form-data">
+    {{ user_form.username |as_crispy_field }}
+    {{ user_form.email |as_crispy_field }}
+    {{ user_form.password |as_crispy_field }}
+    {{ user_form.confirm_password |as_crispy_field }}
+    {{ user_form.bio |as_crispy_field }}
+    {{ user_form.avatar |as_crispy_field }}
+
+    <label for="add_image" class="btn btn-default">Wybierz obraz z dysku</label>
+    <img id="preview_image" src="" width="100" height="100">
+    {% csrf_token %}
+    <button class='btn btn-primary' type="submit" value="">Zarejestruj mnie</button>
+</form>
+{% endblock %}
+</div>
+
+{% block js %}
+    <script src="{% static 'js/user_form.js' %}"></script>
+{% endblock %}

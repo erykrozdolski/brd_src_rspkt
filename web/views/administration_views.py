@@ -1,86 +1,18 @@
 from django.shortcuts import render
-from .forms import ArticleForm, LoginForm, ImageForm, VideoForm, QuoteForm, ParagraphForm, CategoryForm
-from .handlers import *
-from .models import Component, Article, Category
-from django.contrib.auth import authenticate, login
+from web.forms import ArticleForm, LoginForm, ImageForm, VideoForm, QuoteForm, ParagraphForm, CategoryForm, UserForm, EditUserForm, PasswordRemindForm
+from web.handlers import *
+from web.forms import SearchArticleForm
+from web.models import Component, Article, Category, User
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse,  JsonResponse
 from django.shortcuts import get_object_or_404, redirect
+from lib.article_helpers import set_component_form
 import json
 from django.core.urlresolvers import reverse
-
-def index(request):
-    articles = Article.objects.filter(is_published=True)
-    return render(request, 'base.html', {'articles': articles})
+from django.contrib.auth.decorators import login_required
 
 
-def user_login(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            cleaned_data = form.cleaned_data
-            user = authenticate(username=cleaned_data['username'],
-                                password=cleaned_data['password'])
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return HttpResponse('Uwierzytelnianie zakończyło się sukcesem')
-                else:
-                    return HttpResponse('Nieprawidłowe dane uwierzytelniające.')
-    else:
-        form = LoginForm()
-    return render(request, 'account/login.html', {'form': form})
-
-
-def articleCreator(request, idk=None):
-    if not idk:
-        article = Article()
-    else:
-        article = get_object_or_404(Article, pk=idk)
-    if request.method == 'POST':
-        article_form = ArticleForm(request.POST, instance=article, files=request.FILES)
-        components_idks = request.POST.getlist('component_idk')
-        position_index = request.POST.getlist('component_position')
-        id_and_position = zip(components_idks, position_index)
-        if article_form.is_valid():
-            article = article_form.save()
-            for idk, position in id_and_position:
-                component = get_object_or_404(Component, pk=idk)
-                component.position = position
-                component.save()
-                article.components.add(component)
-                article.author = request.user
-                article.save()
-            return redirect(reverse('article_details', kwargs={'idk': article.id}))
-        else:
-            article_form = ArticleForm(instance=article, files=request.FILES)
-    else:
-        article_form = ArticleForm(request.POST or None, request.FILES or None, instance=article)
-
-    return render(request, 'article/article_creator.html', {'article_form': article_form,
-                                                            'article': article,
-                                                            'idk': article.id,
-                                                            'image_upload_form': ImageForm(),
-                                                            'videoForm': VideoForm(),
-                                                            'paragraphForm': ParagraphForm(),
-                                                            'quoteForm': QuoteForm(),
-                                                            })
-
-
-def set_component_form(request, kind, component=None):
-    if kind == 'image':
-        form = ImageForm(instance=component, data=request.POST, files=request.FILES, initial={'kind': 'image'})
-    elif kind == 'text':
-        form = ParagraphForm(instance=component, data=request.POST, initial={'kind': 'text'})
-    elif kind == 'quote':
-        form = QuoteForm(instance=component, data=request.POST, initial={'kind': 'quote'})
-    elif kind == 'url':
-        form = VideoForm(instance=component, data=request.POST, initial={'kind': 'url'})
-    else:
-        raise AttributeError
-    return form
-
-
-
+@login_required
 def add_article_component(request):
     response_data = {'success': False}
     if request.POST:
@@ -95,6 +27,7 @@ def add_article_component(request):
     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
 
+@login_required
 def edit_article_component(request):
     response_data = {'success': False}
     if request.POST:
@@ -102,12 +35,15 @@ def edit_article_component(request):
         cmd = request.POST.get('cmd', '')
         if cmd == 'before_edit':
             component = get_object_or_404(Component, pk=idk)
+            print(component.image)
             header = component.header
             if component.kind == 'image':
+                print(component.pk)
                 component_data = ''
+
             else:
                 component_data = getattr(component, component.kind)
-            modal = '#edit{}Modal'.format(component.kind.capitalize())
+            modal = '#{}Modal'.format(component.kind.capitalize())
             input_el = '#id_{}'.format(component.kind)
             response_data = {'success': True, 'header': header, 'modal': modal, 'component_data': component_data,
                              'input_el': input_el}
@@ -118,12 +54,15 @@ def edit_article_component(request):
             if component_form.is_valid():
                 component_form.save()
                 response_data = {'success': True}
+                print('formularz bezbłędny')
             else:
+                print('formularz ma błędy')
                 response_data = {'success': False}
 
     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
 
+@login_required
 def delete_article_component(request):
     response_data = {'success': False}
     if request.POST:
@@ -138,17 +77,21 @@ def delete_article_component(request):
 
 def articleDetails(request, idk=None):
     article = get_object_or_404(Article, pk=idk)
-    articles = Article.objects.all()
+    articles = Article.objects.all()[0:5]
+    categories = Category.objects.all()
+    popular_articles =  Article.get_most_popular()
+
     if article.components:
         components = article.components.all().order_by('position')
 
     return render(request, 'article/article.html', {'article': article,
                                                     'components': components,
-                                                    'articles': articles,})
+                                                    'articles': articles,
+                                                    'popular_articles': popular_articles,
+                                                    'categories':categories})
 
-
+@login_required
 def articleList(request):
-    from web.forms import SearchArticleForm
     article_list = Article.objects.all()
     search_form = SearchArticleForm()
     if request.is_ajax():
@@ -161,31 +104,36 @@ def articleList(request):
             response_data = {'success': True}
         elif cmd == 'publish_article':
             article.publish()
-            response_data = {'success': True}
+            article.save()
+            response_data = {'success': True, 'pub_date': article.published}
         elif cmd == 'unpublish_article':
             article.unpublish()
-            response_data = {'success': True}
+            article.save()
+            response_data = {'success': True, 'pub_date': '-'}
         return JsonResponse(response_data)
     return render(request, 'article/article_list.html', {'article_list': article_list,
                                                          'search_form': search_form})
 
-
+@login_required
 def category_details(request, idk=None):
+    if idk:
+        category = get_object_or_404(Category, pk=idk)
+        category_form = CategoryForm(request.POST or None, request.FILES or None, instance=category)
+    else:
+        category = Category()
+        category_form = CategoryForm()
     if request.POST:
-        category_form = CategoryForm(data=request.POST, files=request.FILES)
-        if idk:
-            category_form.instance = get_object_or_404(Category, pk=idk)
+        category_form = CategoryForm(instance=category, data=request.POST, files=request.FILES)
         if category_form.is_valid():
             category_form.save()
             return redirect('category_list')
-    else:
-        if idk:
-            category_form = CategoryForm(instance=get_object_or_404(Category, pk=idk))
-        else:
-            category_form = CategoryForm()
+
+
+
     return render(request, 'category/category_details.html', {'category_form': category_form})
 
 
+@login_required
 def categoryList(request):
     category_form = CategoryForm()
     all_categories = Category.objects.all()
@@ -200,7 +148,50 @@ def categoryList(request):
                                                   'category_list': all_categories
                                                   })
 
+@login_required
+def usersList(request):
+    users_list = User.objects.all()
+    if request.is_ajax():
+        response_data = {'success': True}
+        cmd = request.POST.get('cmd', '')
+        user = get_object_or_404(User, pk=request.POST.get('idk', ''))
+        if cmd == 'delete_user':
+            user.delete()
+        elif cmd == 'unblock_user':
+            user.unblock()
+            response_data = {'text': 'aktywny', 'button_label': 'Zablokuj', 'command': 'block_user'}
 
+        elif cmd == 'block_user':
+            user.block()
+            response_data = {'text': 'zablokowany', 'button_label': 'Odblokuj', 'command': 'unblock_user'}
+
+
+        return JsonResponse(response_data)
+    return render(request, 'administration/users_list.html', {
+                                                  'users_list': users_list
+                                                  })
+
+@login_required
+def userDetails(request, idk=None):
+    if request.POST:
+        if idk:
+            user_form = EditUserForm(data=request.POST, instance=get_object_or_404(User, pk=idk))
+        else:
+            user_form = UserForm(request.POST)
+        if user_form.is_valid():
+            user_form.save()
+            return redirect('users_list')
+    else:
+        if idk:
+            user_form = EditUserForm(instance=get_object_or_404(User, pk=idk))
+        else:
+            user_form = UserForm()
+
+    return render(request, 'administration/user_details.html', {'user_form': user_form,
+                                                                'idk': idk
+                                                                })
+
+@login_required
 def articleListAjax(request):
     all_offers = Article.objects.all()
     filtered_articles = Article.objects.all()
@@ -227,3 +218,42 @@ def articleListAjax(request):
             filtered_articles = filtered_articles.filter(**{key + '__icontains': values_list})
 
     return render(request, 'article/article_results.html', {'article_list': filtered_articles.distinct()})
+
+
+@login_required
+def articleCreator(request, idk=None):
+    if idk:
+        article = get_object_or_404(Article, pk=idk)
+    else:
+        article = Article()
+    if request.method == 'POST':
+        article_form = ArticleForm(request.POST, instance=article, files=request.FILES)
+        components_idks = request.POST.getlist('component_idk')
+        position_index = request.POST.getlist('component_position')
+        id_and_position = zip(components_idks, position_index)
+        if article_form.is_valid():
+            article = article_form.save()
+            for idk, position in id_and_position:
+                component = get_object_or_404(Component, pk=idk)
+                component.position = position
+                component.save()
+                article.components.add(component)
+                article.author = request.user
+                article.save()
+            return redirect(reverse('article_creator', kwargs={'idk': article.id}))
+        else:
+            article_form = ArticleForm(instance=article, files=request.FILES)
+    else:
+        if idk:
+            article_form = ArticleForm(request.POST or None, request.FILES or None, instance=article)
+        else:
+            article_form = ArticleForm()
+
+    return render(request, 'article/article_creator.html', {'article_form': article_form,
+                                                            'article': article,
+                                                            'idk': article.id,
+                                                            'image_upload_form': ImageForm(),
+                                                            'videoForm': VideoForm(),
+                                                            'paragraphForm': ParagraphForm(),
+                                                            'quoteForm': QuoteForm(),
+                                                            })

@@ -12,3 +12,4 @@ $('#category_table').on("click", ".delete_category", function(event){
                 post_data, success_function=success_function)
 });
 
+

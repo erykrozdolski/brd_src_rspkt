@@ -38,9 +38,9 @@ function simplePost(url, post_data, success_function=function(){}){
         url: url,
         data: post_data,
         dataType: 'json',
-        success: function (data) {
+        success: function (post_data) {
             if (data.success){
-                success_function(data);
+                success_function(post_data);
             }
         }
     })
@@ -49,3 +49,59 @@ function simplePost(url, post_data, success_function=function(){}){
 function capitalize(s){
     return s[0].toUpperCase() + s.slice(1);
 };
+
+function readUrl(input,image) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $(image)
+                .attr('src', e.target.result)
+                .width(100)
+                .height(100);
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+
+
+$('#hamburger').click(function(){
+    $("#mySidenav").toggleClass('open');
+    $("#hamburger").toggleClass('open');
+});
+
+$('input[type="text"]').on('focus blur', function (e) {
+    $(this).parents('.control-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
+}).trigger('blur');
+
+$('input[type="email"]').on('focus blur', function (e) {
+    $(this).parents('.control-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
+}).trigger('blur');
+
+$('input[type="password"]').on('focus blur', function (e) {
+    $(this).parents('.control-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
+}).trigger('blur');
+
+$('textarea').on('focus blur', function (e) {
+    $(this).parents('.control-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
+}).trigger('blur');
+
+// $('.select2-selection--single').on('focus blur', function (e) {
+//     $(this).closest('.control-group').children("label").toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
+// }).trigger('blur');
+
+$(document).ready(function(){
+    $("input[type='text']").parent().siblings(".control-label").addClass("floating");
+    $("input[type='password']").parent().siblings(".control-label").addClass("floating");
+    $("input[type='email']").parent().siblings(".control-label").addClass("floating");
+    $("textarea").parent().siblings(".control-label").addClass("floating");
+    $("select").parent().siblings(".control-label").addClass("floating");
+})
+
+
+
+$("textarea").keyup(function(){
+    $(this).height("auto");
+    $(this).css("padding","0")
+    $(this).height(this.scrollHeight+5);
+})

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Logowanie {% endblock %}
+
+{% block content %}
+{% load thumbnail %}
+{% load custom_tags %}
+
+{% for article in articles %}
+    {% if forloop.first %}
+        <div id="main_article" class="row mb20">
+            <a href="{% url 'article_details' idk=article.pk %}">
+                <div class="col-md-6" id="jumbo_article_image">
+                    {% thumbnail article.cover "600x400" crop="center" as img %}
+                        <img  class="" src="{{ img.url }}" width="100%" height="auto" alt='okładka'>
+                    {% endthumbnail %}
+                </div>
+                <div class="col-md-6" id="jumbo_article_info>
+                    <div class="article_jumbo col-md-12" ">
+                        <div class="col-md-10">
+                            <h2>{{ article.title }}</h2>
+                            {{ article.subtitle }}
+                            {% for component in article.components.all %}
+                                {% if forloop.first %}
+                                    {% if component.kind == 'text' %}
+                                        <p>{{component.text|safe|truncatewords:40}}</p>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    {% else %}
+        <div class="col-md-3">
+            <a href="{% url 'article_details' idk=article.pk %}">
+                <div class="row">
+                    <div class="article_sm article_preview">
+                        {% thumbnail article.cover "200x125" crop="center" as img %}
+                            <img class="center_horizontally" src="{{ img.url }}" alt='okładka'>
+                        {% endthumbnail %}
+                        <div class="center_horizontally">
+
+                        <h4>{{ article.title }}</h4>
+                        <p>{{ article.subtitle }}</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    {% endif %}
+{% endfor %}
+{% endblock %}

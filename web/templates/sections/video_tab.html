@@ -1,0 +1,6 @@
+{% load crispy_forms_tags %}
+<form action="" method="post" id="new-video-form" onsubmit="event.preventDefault();"> {% csrf_token %}
+    {{ videoForm.header|as_crispy_field }}
+    {{ videoForm.url|as_crispy_field }}
+    <button id="confirmVideo" data-add='dodaj film' data-edit="edytuj adres url" data-cmd="add" type="submit" class="btn btn-primary confirm_button">dodaj wideo</button>
+</form>

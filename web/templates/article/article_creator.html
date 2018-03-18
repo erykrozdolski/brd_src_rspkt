@@ -3,108 +3,111 @@
 {% block content %}
 {% load thumbnail %}
 {% load static %}
-<div class="row">
+<div class="container">
     <form id='article_form' action=""  method="post" enctype="multipart/form-data">
         {% csrf_token %}
-    <div class="col-lg-12">
         <div class="row">
-            <div class="col-lg-5">
+            <div class="col-lg-3">
                 <h1>{%if idk %} edytuj {% else%} dodaj nowy {% endif %} artykuł</h1>
-            </div>
-            <div class="col-sm-7">
-                <div class="col-lg-12">
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#newParagraphModal">dodaj kolumnę</button>
-                        </div>
-                        <div class="col-lg-3">
-                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#newImageModal">dodaj obraz</button>
-                        </div>
-                        <div class="col-lg-3">
-                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#newQuoteModal">dodaj cytat</button>
-                        </div>
-                        <div class="col-lg-3">
-                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#newUrlModal">dodaj wideo</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <hr>
-        <div class="col-lg-12 no_paddings">
-            <div class="col-lg-6">
                 {{ article_form.title|as_crispy_field }}
                 {{ article_form.subtitle|as_crispy_field }}
                 {{ article_form.category|as_crispy_field }}
                 {{ article_form.cover|as_crispy_field }}
-                <label for="loadCover" class="btn btn-default">{% if article.cover %}Zamień obraz tytułowy {%else%}Wybierz obraz z dysku{% endif %}</label>
-                {% thumbnail article.cover "100x100" crop="center" as img %}
-                    <img src="{{ img.url }}" width="{{ img.width }}" height="{{ img.height }}">
-                {% endthumbnail %}
-                <div class="col-sm-12">
-                <hr>
-                <button type="button" class="btn btn-default pull-right">podgląd artykułu</button>
+                <div id="cover_info">
+                    <a href="" target="_blank">
+                        {% if article.cover %}
+                            {% thumbnail article.cover "250x250" crop="center" as img %}
+                                <img class="centered articleListCover" src="{{ img.url }}" width="100" alt='okładka'>
+                            {% endthumbnail %}
+                        {% endif %}
+                        <img id="preview_cover" src="" alt=""/>
+                        <label id="upload_cover" for="change_cover" class="btn btn-default">Wybierz obraz z dysku</label>
+                    </a>
+                </div>
+                {% if article.pk %}
+                    <a href='{% url "article_details" idk=article.pk %}' type="button" class="btn btn-default pull-right">podgląd artykułu</a>
+                {% endif %}
                 <button class="btn btn-default pull-right" type="submit">Zapisz artykuł</button>
             </div>
+            <div class="col-lg-3">
+                <ul>
+                    <li class="component_li row">
+                        <div class="col-sm-16">
+                        Okładka / Tytuł / Podtytuł
+                        </div>
+                    </li>
+                </ul>
+                <div class="html_templates">
+                    <li id="" class="ui-state-default component_li ui-sortable-handle">
+                    <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                    <span class="header_name"></span>
+                    <button class="btn btn-default pull-right editComponent" data-cmd="edit" type="button" data-toggle="modal" data-target="">Edytuj</button>
+                    <button class="btn btn-default pull-right deleteComponent" type="button">Usuń</button>
+                    <input class="component_idk" type="hidden">
+                    <input class="component_position"  value="" type="hidden">
+                    </li>
+                </div>
+                <ul id="sortable" class="articleSkeleton">
+                    {% if idk %}
+                        {% for component in article.components.all %}
+                            <li id='{{component.id}}' class="ui-state-default component_li row">
+                                <div class="div col-sm-8">
+                                    <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                                    {{component.get_kind_display}}
+                                    <span class="header_name">{{component.header}}</span>
+                                </div>
+                                <div class="div col-sm-4">
+                                    <button class="btn btn-default{% if component.kind == 'image' %} editImage {% else %} editComponent  {% endif%} pull-right"
+                                    data-cmd="edit" type="button" data-toggle="modal" data-target="#{{component.kind |capfirst}}Modal">Edytuj</button>
+                                    <button class="btn btn-default pull-right deleteComponent" type="button">Usuń</button>
+                                </div>
+                                <input class="component_idk" name="component_idk" value="{{component.id}}" type="hidden">
+                                <input class="component_position" name="component_position" value="{{component.position}}" type="hidden">
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
             </div>
             <div class="col-lg-6">
-                <div class="col-sm-12 verticalLine">
-                    Szkielet artykułu
-                    <hr>
-                    <div class="col-lg-12 ">
-                            <div class="html_templates">
-                                <li id="" class="ui-state-default component_li ui-sortable-handle">
-                                    <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-                                    <span class="header_name"></span>
-                                    <button class="btn btn-default pull-right editComponent" type="button" data-toggle="modal" data-target="">Edytuj</button>
-                                    <button class="btn btn-default pull-right deleteComponent" type="button">Usuń</button>
-                                    <input class="component_idk" type="hidden">
-                                    <input class="component_position"  value="" type="hidden">
-                                </li>
-                            </div>
-                        <div class="">
-                            <ul>
-                                <li class="component_li">Okładka / Tytuł / Podtytuł</li>
-                            </ul>
-                            <ul id="sortable" class="articleSkeleton">
-                                {% if idk %}
-                                    {% for component in article.components.all %}
-                                        <li id='{{component.id}}' class="ui-state-default component_li">
-                                            <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-                                            {{component.get_kind_display}} <span class="header_name">{{component.header}}</span>
-                                            <button class="btn btn-default{% if component.kind == 'image' %} editImage {% else %} editComponent  {% endif%} pull-right" type="button" data-toggle="modal" data-target="#edit{{component.kind |capfirst}}Modal">Edytuj</button>
-                                            <button class="btn btn-default pull-right deleteComponent" type="button">Usuń</button>
-                                            <input class="component_idk" name="component_idk" value="{{component.id}}" type="hidden">
-                                            <input class="component_position" name="component_position" value="{{component.position}}" type="hidden">
-                                        </li>
-                                    {% endfor %}
-                                {% endif %}
-                            </ul>
-                        </div>
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        <a type="button" class="nav-link active addComponent" data-toggle="pill" data-cmd="add" data-target="#textTab">dodaj kolumnę</a>
+                    </li>
+                    <li class="nav-item">
+                        <a type="button" class="nav-link addComponent" data-cmd="add" data-toggle="pill" data-target="#imageTab">dodaj obraz</a>
+                    </li>
+                    <li class="nav-item">
+                        <a type="button" class="nav-link addComponent" data-cmd="add" data-toggle="pill" data-target="#quoteTab">dodaj cytat</a>
+                    </li>
+                    <li class="nav-item">
+                        <a type="button" class="nav-link addComponent" data-cmd="add" data-toggle="pill" data-target="#videoTab">dodaj wideo</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="textTab">
+                        {% include "sections/text_tab.html" %}
                     </div>
-
+                    <div class="tab-pane" id="imageTab">
+                        {% include "sections/image_tab.html" %}
+                    </div>
+                    <div class="tab-pane" id="quoteTab">
+                        {% include "sections/quote_tab.html" %}
+                    </div>
+                    <div class="tab-pane" id="videoTab">
+                        {% include "sections/video_tab.html" %}
+                    </div>
                 </div>
             </div>
-
         </div>
-    </div>
-    <input type="hidden" id="idk" name="variable" value="{{idk}}">
+        <input type="hidden" id="idk" name="variable" value="{{idk}}">
     </form>
 </div>
-{% include "modals/new_image_modal.html" %}
-{% include "modals/new_paragraph_modal.html" %}
-{% include "modals/new_quote_modal.html" %}
-{% include "modals/new_url_modal.html" %}
-{% include "modals/edit_image_modal.html" %}
-{% include "modals/edit_paragraph_modal.html" %}
-{% include "modals/edit_quote_modal.html" %}
-{% include "modals/edit_url_modal.html" %}
 
 
 
 
 {% endblock %}
 {% block js %}
-    <script src="{% static 'js/article_creator.js' %}"></script>
-{% endblock %}
+<script src="{% static 'js/article_creator.js' %}"></script>
 
+{% endblock %}

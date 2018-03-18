@@ -1,0 +1,12 @@
+{% load crispy_forms_tags %}
+
+<form action="" method="post" id="new-image-form" enctype="multipart/form-data"  onsubmit="event.preventDefault()"> {% csrf_token %}
+    <span class="width100">{{image_upload_form.header|as_crispy_field}}</span>
+    {{image_upload_form.image|as_crispy_field}}
+    <img id="preview_image" src="" alt=""/>
+    <label for="add_image" class="btn btn-default">Wybierz obraz z dysku</label>
+    <div id="image_info"></div>
+    <input id='image_cmd_input' class="hidden" value="addImage" name="cmd">
+    <input class="hidden" value="image" name="kind">
+    <button class="btn btn-primary confirm_button" type="submit" data-add='dodaj obraz' data-edit="edytuj obraz" data-cmd="add" id='confirmImage'>dodaj obraz</button>
+</form>

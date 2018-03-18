@@ -2,44 +2,34 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand main_logo" href="{% url 'main' %}"></a>
+        <div id="hamburger" class="open_sidebar" class="navbar-toggle collapsed" data-toggle="collapse" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <a class="navbar-brand main_logo" href="{% url 'index' %}"></a>
     </div>
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-          <ul class="nav navbar-nav pull-right">
-              {% if request.user.is_authenticated %}
-                <div class="dropdown">
-                  <a class="btn dropdown-toggle" type="button" data-toggle="dropdown">administracja
-                  <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                          <a class="btn btn-default" href="{% url 'article_creator' %}">dodaj artykuł</a>
-                        </li>
-                        <li>
-                          <a class="btn btn-default" href="{% url 'article_list' %}">lista artykułów</a>
-                        </li>
-                        <li>
-                          <a class="btn btn-default" href="{% url 'category_list' %}">działy</a>
-                        </li>
-                        <li>
-                          <a class="btn btn-default" >moderatorzy</a>
-                        </li>
-                    </ul>
-                </div>
-              {% endif %}
-          </ul>
+  </div>
+    <div id="mySidenav" class="sidenav">
+      <div class="content">
+        <ul class="">
+            {% for category in categories %}
+                <li><a class="" href="">{{category.name}}</a></li>
+            {% endfor %}
+            <hr>
+            {% if request.user.is_authenticated %}
+                <li><a class="" href="{% url 'article_creator' %}">dodaj artykuł</a></li>
+                <li><a class="" href="{% url 'article_list' %}">lista artykułów</a></li>
+                <li><a class="" href="{% url 'category_list' %}">działy</a></li>
+                <li><a class="" href="{% url 'users_list' %}">moderatorzy</a></li>
+                <li><a class="" href="{% url 'log_out' %}">wyloguj się</a></li>
+            {% endif %}
+        </ul>
       </div>
     </div>
   </div>
-  <div class="visual_key">
-      <a href='{% url "login" %}' id="circle"><span class="hidden_text">zaloguj się</span></a>
-  </div>
 </nav>
+
+
 
 
