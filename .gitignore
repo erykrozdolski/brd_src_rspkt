@@ -27,4 +27,5 @@ web/media/
 web/migrations/__pycache__/
 web/static/images/brdsrcrspkt_visual_key.jpg
 web/templatetags/__pycache__/
-
+lib/
+brd_src_rspkt/settings_local.py

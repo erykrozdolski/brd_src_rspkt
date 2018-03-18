@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+{% load thumbnail %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+    <form id="category_form"  method="post" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h2>{% if idk %}edytuj{% else %} dodaj nową{% endif %} kategorię</h2>
+        <hr>
+        <div class="col-sm-6">
+            {{ category_form.name|as_crispy_field }}
+            {{ category_form.cover|as_crispy_field }}
+        </div>
+        <div class="col-sm-6">
+            <label for="add_image" class="btn btn-default">Wybierz obraz z dysku</label>
+            {% if category_form.instance.cover %}
+                {% thumbnail category_form.instance.cover "100x100" crop="center" as img %}
+                <img id="preview_image" src="{{ img.url }}" width="{{ img.width }}" height="{{ img.height }}">
+                {% endthumbnail %}
+            {% else %}
+                <img id="preview_image" src="" width="" height="">
+            {% endif %}
+        </div>
+        <div class="row">
+            <button class="btn btn-primary" type="submit">Zapisz</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/category_form.js' %}"></script>
+{% endblock %}
