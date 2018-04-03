@@ -11,24 +11,24 @@
         <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
         <script src="{% static 'jquery-ui/jquery-ui.js' %}"></script>
         <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
-        <script src="{% static 'select2/dist/js/select2.js' %}"></script>
+        <script src="{% static 'select2/dist/js/select2.full.min.js' %}"></script>
         <script src="{% static 'sweetalert2/dist/sweetalert2.js' %}"></script>
     </head>
     <body>
         {% include "main_nav.html" %}
-        <div class="container-fluid">
-            {% block content %}
-            {% endblock %}
+        <div class="container main_container">
+            <main>
+                {% block content %}
+                {% endblock %}
+            </main>
+            <footer>
+                {% include "footer.html" %}
+            </footer>
         </div>
-        <footer>
-            {% include "footer.html" %}
-        </footer>
     </body>
     {% block js %}
-        <script src="{% static 'js/base.js' %}"></script>
     {% endblock %}
-    <script src="{% static 'js/tiny_mce.js' %}"></script>
     <script src="{% static 'js/common.js' %}"></script>
-    <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=qagffr3pkuv17a8on1afax661irst1hbr4e6tbv888sz91jc"></script>
+    <script src="{% static 'js/base.js' %}"></script>
 
 </html>

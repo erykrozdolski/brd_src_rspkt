@@ -20,6 +20,7 @@ def add_article_component(request):
         component_form = set_component_form(request, kind)
         if component_form.is_valid():
             component = component_form.save()
+            print("Jest valid", component)
             idk = component.id
             kind = component.get_kind_display()
             response_data = {'success': True, 'idk': idk, 'kind': kind}
@@ -35,17 +36,15 @@ def edit_article_component(request):
         cmd = request.POST.get('cmd', '')
         if cmd == 'before_edit':
             component = get_object_or_404(Component, pk=idk)
-            print(component.image)
             header = component.header
             if component.kind == 'image':
-                print(component.pk)
                 component_data = ''
-
             else:
                 component_data = getattr(component, component.kind)
-            modal = '#{}Modal'.format(component.kind.capitalize())
+            print(component_data)
+            tab = '#{}Tab'.format(component.kind)
             input_el = '#id_{}'.format(component.kind)
-            response_data = {'success': True, 'header': header, 'modal': modal, 'component_data': component_data,
+            response_data = {'success': True, 'header': header, 'tab': tab, 'component_data': component_data,
                              'input_el': input_el}
         else:
             kind = request.POST.get('kind')
@@ -54,9 +53,7 @@ def edit_article_component(request):
             if component_form.is_valid():
                 component_form.save()
                 response_data = {'success': True}
-                print('formularz bezbłędny')
             else:
-                print('formularz ma błędy')
                 response_data = {'success': False}
 
     return HttpResponse(json.dumps(response_data), content_type='application/json')
@@ -74,7 +71,7 @@ def delete_article_component(request):
 
     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
-
+@login_required
 def articleDetails(request, idk=None):
     article = get_object_or_404(Article, pk=idk)
     articles = Article.objects.all()[0:5]

@@ -117,7 +117,6 @@ class SearchArticleForm(Form):
         super(SearchArticleForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.fields['category'].choices = [(c.pk, c.name) for c in Category.objects.all()]
-        self.fields['search'].label = False
 
     category = MultipleChoiceField(label='kategoria', required=False, choices=[])
     title = CharField(label='tytuł', required=False)
@@ -126,7 +125,7 @@ class SearchArticleForm(Form):
     published = ChoiceField(label='opublikowany', required=False)
     is_published = DateField(label='data publikacji', required=False)
     created = DateField(label='data utworzenia', required=False)
-    search = CharField(label='', widget=TextInput())
+    search = CharField(label='Wyszukaj', widget=TextInput(), required=False)
 
 
 class ImageForm(ModelForm):

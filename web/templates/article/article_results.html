@@ -6,16 +6,16 @@
     <tr>
         <td>
             <input type="checkbox" id="select_all">
-        </td>
-        <td>okładka</td>
-        <td>tytuł</td>
-        <td>podtytuł</td>
-        <td>autor</td>
-        <td>data utworzenia</td>
-        <td>data publikacji</td>
-        <td>status</td>
-        <td>kategoria</td>
-        <td>akcje</td>
+        </th>
+        <th></th>
+        <th>tytuł</th>
+        <th>podtytuł</th>
+        <th>autor</th>
+        <th>data utworzenia</th>
+        <th>data publikacji</th>
+        <th>status</th>
+        <th>kategoria</th>
+        <th></th>
     </tr>
 </thead>
 <tbody>
@@ -28,7 +28,7 @@
         </td>
         <td>
             <a href="{% url 'article_details' idk=article.pk %}">
-            {% thumbnail article.cover "350x250" crop="center" as img %}
+            {% thumbnail article.cover "75x75" crop="center" as img %}
             <img class="centered articleListCover" src="{{ img.url }}" width="100%" alt='okładka'>
             {% endthumbnail %}
             </a>
@@ -41,13 +41,13 @@
         <td>{{article.state}}</td>
         <td>{{article.category}}</td>
         <td>
-            <button class="btn btn-default trigger_article" data-idk="{{article.pk}}"
+            <button type="button" class="btn btn-default trigger_article" data-idk="{{article.pk}}"
                     data-trigger="{% if article.is_published %}unpublish_article{% else %}publish_article{% endif %}">
                 {% if article.is_published %} Ukryj {% else %} Opublikuj {% endif %}
             </button>
-            <a href="{% url 'article_creator' idk=article.pk %}" class="btn btn-default">Edytuj</a>
-            <button class="btn btn-default delete_article" data-idk="{{article.pk}}">Usuń</button>
-        </td>
+            <a href="{% url 'article_creator' idk=article.pk %}" class="btn edit_btn"></a>
+            <button type="button" class="btn remove_btn delete_article" data-idk="{{article.pk}}"></button>
+        </th>
     </tr>
 {% empty %}
         Brak wyników o podanych parametrach.

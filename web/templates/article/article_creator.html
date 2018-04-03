@@ -3,72 +3,48 @@
 {% block content %}
 {% load thumbnail %}
 {% load static %}
+<form id='article_form' action=""  method="post" enctype="multipart/form-data">
+
+{% csrf_token %}
+
 <div class="container">
-    <form id='article_form' action=""  method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="row">
-            <div class="col-lg-3">
-                <h1>{%if idk %} edytuj {% else%} dodaj nowy {% endif %} artykuł</h1>
-                {{ article_form.title|as_crispy_field }}
-                {{ article_form.subtitle|as_crispy_field }}
-                {{ article_form.category|as_crispy_field }}
-                {{ article_form.cover|as_crispy_field }}
-                <div id="cover_info">
-                    <a href="" target="_blank">
-                        {% if article.cover %}
-                            {% thumbnail article.cover "250x250" crop="center" as img %}
-                                <img class="centered articleListCover" src="{{ img.url }}" width="100" alt='okładka'>
-                            {% endthumbnail %}
-                        {% endif %}
-                        <img id="preview_cover" src="" alt=""/>
-                        <label id="upload_cover" for="change_cover" class="btn btn-default">Wybierz obraz z dysku</label>
-                    </a>
-                </div>
-                {% if article.pk %}
-                    <a href='{% url "article_details" idk=article.pk %}' type="button" class="btn btn-default pull-right">podgląd artykułu</a>
-                {% endif %}
-                <button class="btn btn-default pull-right" type="submit">Zapisz artykuł</button>
-            </div>
-            <div class="col-lg-3">
-                <ul>
-                    <li class="component_li row">
-                        <div class="col-sm-16">
-                        Okładka / Tytuł / Podtytuł
-                        </div>
-                    </li>
-                </ul>
-                <div class="html_templates">
-                    <li id="" class="ui-state-default component_li ui-sortable-handle">
-                    <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-                    <span class="header_name"></span>
-                    <button class="btn btn-default pull-right editComponent" data-cmd="edit" type="button" data-toggle="modal" data-target="">Edytuj</button>
-                    <button class="btn btn-default pull-right deleteComponent" type="button">Usuń</button>
-                    <input class="component_idk" type="hidden">
-                    <input class="component_position"  value="" type="hidden">
-                    </li>
-                </div>
-                <ul id="sortable" class="articleSkeleton">
-                    {% if idk %}
-                        {% for component in article.components.all %}
-                            <li id='{{component.id}}' class="ui-state-default component_li row">
-                                <div class="div col-sm-8">
-                                    <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-                                    {{component.get_kind_display}}
-                                    <span class="header_name">{{component.header}}</span>
-                                </div>
-                                <div class="div col-sm-4">
-                                    <button class="btn btn-default{% if component.kind == 'image' %} editImage {% else %} editComponent  {% endif%} pull-right"
-                                    data-cmd="edit" type="button" data-toggle="modal" data-target="#{{component.kind |capfirst}}Modal">Edytuj</button>
-                                    <button class="btn btn-default pull-right deleteComponent" type="button">Usuń</button>
-                                </div>
-                                <input class="component_idk" name="component_idk" value="{{component.id}}" type="hidden">
-                                <input class="component_position" name="component_position" value="{{component.position}}" type="hidden">
-                            </li>
-                        {% endfor %}
+    <h1>{%if idk %} edytuj {% else%} dodaj nowy {% endif %} artykuł</h1>
+    <hr>
+    <div class="row">
+        <div class="col-7 row">
+            <div class="col-12 row">
+                <div class="col-4">
+                    {{ article_form.cover|as_crispy_field }}
+
+                    {% if article.cover %}
+                        {% thumbnail article.cover "250x250" crop="center" as img %}
+                            <img class="centered articleListCover" src="{{ img.url }}" width="100" alt='okładka'>
+                        {% endthumbnail %}
                     {% endif %}
-                </ul>
+                    <div id="cover_info">
+                        <a href="" target="_blank">
+                            <img id="preview_cover" src="" alt=""/>
+                            <label id="upload_cover" for="change_cover" class="btn btn-default">Wybierz obraz z dysku</label>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-8">
+                    {{ article_form.title|as_crispy_field }}
+                    {{ article_form.subtitle|as_crispy_field }}
+                    {{ article_form.category|as_crispy_field }}
+                </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-12">
+                <hr>
+                {% if article.pk %}
+                    <a href='{% url "article_details" idk=article.pk %}' type="button" class="btn btn-default ">podgląd artykułu</a>
+                {% endif %}
+                <button class="btn btn-default " type="submit">Zapisz zmiany</button>
+            </div>
+            <input type="hidden" id="idk" name="variable" value="{{idk}}">
+            </form>
+            <div class="col-12">
+                <hr>
                 <ul class="nav nav-pills">
                     <li class="nav-item">
                         <a type="button" class="nav-link active addComponent" data-toggle="pill" data-cmd="add" data-target="#textTab">dodaj kolumnę</a>
@@ -99,8 +75,47 @@
                 </div>
             </div>
         </div>
-        <input type="hidden" id="idk" name="variable" value="{{idk}}">
-    </form>
+        <div class="col-5">
+            <ul>
+                <li class="component_li row">
+                    <div class="col-sm-16">
+                    Okładka / Tytuł / Podtytuł
+                    </div>
+                </li>
+            </ul>
+            <div class="html_templates">
+                <li id="" class="ui-state-default component_li ui-sortable-handle">
+                    <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                    <span class="header_name"></span>
+                    <button class="btn btn-default edit_btn editComponent" data-cmd="edit" type="button" data-target=""></button>
+                    <button class="btn btn-default remove_btn  deleteComponent" type="button"></button>
+                    <input class="component_idk" type="hidden">
+                    <input class="component_position"  value="" type="hidden">
+                </li>
+            </div>
+            <ul id="sortable" class="articleSkeleton">
+                {% if idk %}
+                    {% for component in article.components.all %}
+                        <li id='{{component.id}}' class="ui-state-default component_li row">
+                            <div class="div col-sm-8">
+                                <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                                {{component.get_kind_display}}
+                                <span class="header_name">{{component.header}}</span>
+                            </div>
+                            <div class="div col-sm-4">
+                                <button class="btn edit_btn{% if component.kind == 'image' %} editImage {% else %} editComponent  {% endif%} "
+                                data-cmd="edit" type="button" data-toggle="modal" data-target="#{{component.kind |capfirst}}Modal"></button>
+                                <button class="btn remove_btn deleteComponent" type="button"></button>
+                            </div>
+                            <input class="component_idk" name="component_idk" value="{{component.id}}" type="hidden">
+                            <input class="component_position" name="component_position" value="{{component.position}}" type="hidden">
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
+
+
 </div>
 
 

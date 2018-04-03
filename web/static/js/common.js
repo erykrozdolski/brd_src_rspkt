@@ -1,4 +1,12 @@
-$('select').select2();
+$('select').select2({
+    placeholder: '',
+    width: "100%",
+    containerCssClass: "select2_container",
+    allowClear: true
+});
+
+
+
 $('.dateinput').datepicker();
 
 function sweetPost(ajax_url, post_data, success_function=undefined){
@@ -70,25 +78,21 @@ $('#hamburger').click(function(){
     $("#hamburger").toggleClass('open');
 });
 
-$('input[type="text"]').on('focus blur', function (e) {
+$('input[type="text"]').on('change focus blur', function (e) {
     $(this).parents('.control-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
 }).trigger('blur');
 
-$('input[type="email"]').on('focus blur', function (e) {
+$('input[type="email"]').on('change focus blur', function (e) {
     $(this).parents('.control-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
 }).trigger('blur');
 
-$('input[type="password"]').on('focus blur', function (e) {
+$('input[type="password"]').on('change focus blur', function (e) {
     $(this).parents('.control-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
 }).trigger('blur');
 
-$('textarea').on('focus blur', function (e) {
+$('textarea').on('change focus blur', function (e) {
     $(this).parents('.control-group').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
 }).trigger('blur');
-
-// $('.select2-selection--single').on('focus blur', function (e) {
-//     $(this).closest('.control-group').children("label").toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
-// }).trigger('blur');
 
 $(document).ready(function(){
     $("input[type='text']").parent().siblings(".control-label").addClass("floating");
@@ -96,8 +100,13 @@ $(document).ready(function(){
     $("input[type='email']").parent().siblings(".control-label").addClass("floating");
     $("textarea").parent().siblings(".control-label").addClass("floating");
     $("select").parent().siblings(".control-label").addClass("floating");
+    $(".select2_container").closest('.control-group').toggleClass('focused', $(this).text() != '');
+    alert($(".select2_container").text());
 })
 
+$(".select2_container").on('change focus blur', function (e){
+    $(this).closest('.control-group').toggleClass('focused', (e.type === 'focus' || $(this).text() != ''));
+});
 
 
 $("textarea").keyup(function(){

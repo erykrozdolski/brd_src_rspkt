@@ -10,32 +10,24 @@ $( "#sortable" ).sortable();
 $( "#sortable" ).disableSelection();
 });
 
-function add_component_success(data, header, modal, kind){
+function add_component_success(data, tab, kind){
     $('.html_templates li').clone().appendTo('.articleSkeleton');
     $('.articleSkeleton li:last-child ').attr('id', data.idk);
     $('#'+data.idk).prepend(data.kind);
-    $('#'+data.idk +" .header_name").text(header);
-    $('#'+data.idk +" .editComponent").attr('data-target', '#' + capitalize(kind) + 'Modal');
+    $('#'+data.idk +" .editComponent").attr('data-target', '#' + kind.toLowerCase() + 'Tab');
     $('#'+data.idk +" .component_idk").val(data.idk);
     $('#'+data.idk +" .component_idk").attr('name', 'component_idk');
     $('#'+data.idk +" .component_position").attr('name', 'component_position');
-    $(modal).modal('hide');
 }
 
-function edit_component_success(data, header, modal, kind, input, componentData,idk){
-    $(modal.concat(" ","#id_header")).val(header);
-    $(modal.concat(" ",input)).val(componentData);
-    $('#'+idk+' '+'.header_name').text(header);
-    $(modal).modal('hide');
+function edit_component_success(data, header, tab, kind, input_el, componentData,idk){
+    $(tab.concat(" ","#id_header")).val(header);
+    $(tab.concat(" ",input_el)).val(componentData);
 }
 
-function postComponent(url, modal, input, kind, success_function=none){
-    if (kind=='text'){
-        var componentData = "chuj";
-    }
-    else if (kind=='image'){
+function postComponent(url, tab, input, kind, success_function=none){
+    if (kind=='image'){
         var data = new FormData($('#new-image-form').get(0));
-        var header = $('#id_header').val();
         $.ajax({
             url: add_url,
             type: 'POST',
@@ -49,32 +41,31 @@ function postComponent(url, modal, input, kind, success_function=none){
                     $('.articleSkeleton li:last-child ').attr('id', data.idk);
                     $('#'+data.idk).prepend(data.kind);
                     $('#'+data.idk +" .header_name").text(header);
-                    $('#'+data.idk +" .editComponent").attr('data-target', '#' + capitalize(data.kind) + 'Modal');
-                    $('#'+data.idk +" .editComponent").attr('class', 'pull-right editImage');
+                    $('#'+data.idk +" .editComponent").attr('data-target', '#' + capitalize(data.kind) + 'Tab');
+                    $('#'+data.idk +" .editComponent").attr('class', ' editImage');
                     $('#'+data.idk +" .editComponent").removeClass("editComponent" ).addClass( "editImage" );
                     $('#'+data.idk +" .component_idk").val(data.idk);
                     $('#'+data.idk +" .component_idk").attr('name', 'component_idk');
                     $('#'+data.idk +" .component_position").attr('name', 'component_position');
-                    $('#ImageModal').modal('hide');
             }
            }
         });
     }
     else{
-        var componentData = $(modal+' '+input).val();
+        var componentData = $(tab+' '+input).val();
     }
-    var header = $(modal.concat(" ","#id_header")).val();
-    var idk = $(modal).attr('data-idk');
-    var post_data = {'header': header, 'kind': kind, 'idk': idk};
-    post_data[kind] = componentData
+
+    var idk = $(tab).attr('data-idk');
+    var header = $(tab+' '+"#id_header").val();
+    var post_data = {'kind': kind, 'idk': idk, "header": header};
+    post_data[kind] = componentData;
     $.ajax({
         type: 'POST',
         url: url,
         data: post_data,
-        dataType: 'json',
         success: function (data) {
             if (data.success){
-                success_function(data, header, modal, kind, input, componentData,idk);
+                success_function(data, tab, kind, input, componentData, idk);
             }
         }
     });
@@ -90,19 +81,10 @@ function fillEditedForm(clicked){
         dataType: 'json',
         success: function (data) {
             if (data.success){
-                if (data.input_el == '#id_text'){
-                    $('#id_text').text(data.component_data);
-                } else {
-                    var input = $(data.modal.concat(" ", data.input_el)).val(data.component_data);
-                }
-                var header = $(data.modal.concat(" ", "#id_header")).val(data.header);
-                $(data.modal).attr('data-idk', idk);
-                let button = $(data.modal.concat(' ','.confirm_button'));
-                let modal_header = $(data.modal.concat(' ','.modal-title'));
-                button.attr('data-cmd','edit')
-                button.attr('text','edit')
-                button.text(button.attr('data-edit'))
-                modal_header.text(modal_header.attr('data-edit'))
+                $(data.tab.concat(" ","#id_header")).val(data.header);
+                $(data.tab.concat(" ",data.input_el)).val(data.component_data);
+                $('#'+idk+' '+'.header_name').text(data.header);
+                console.log(JSON.stringify(data));
             }
         }
     });
@@ -113,16 +95,14 @@ $('.articleSkeleton').delegate(".editComponent", "click", function(){
 })
 
 $('body').delegate(".addComponent", "click", function(){
-    let modal = $(this).attr('data-target')
-    let modal_header = $(modal.concat(' ','.modal-title'));
-    let button = $(modal.concat(' ','.confirm_button'))
-    button.text(button.attr('data-add'))
-    modal_header.text(modal_header.attr('data-add'))
-    $('.modal input, textarea').each(function(){
+    let tab = $(this).attr('data-target');
+    let button = $(tab.concat(' ','.confirm_button'));
+    button.text(button.attr('data-add'));
+    $(this).attr('data-add');
+    $('.tab-content input, textarea').each(function(){
         $(this).html('');
         $(this).val('');
     });
-    $('#id_text').text('');
 
 })
 
@@ -141,34 +121,34 @@ $('.articleSkeleton').delegate(".deleteComponent", "click", function() {
 
 $('#confirmText').click(function(){
     if ($(this).attr('data-cmd')=='add'){
-        postComponent(add_url, '#TextModal','#id_text', 'text', add_component_success);
+        postComponent(add_url, '#textTab','#id_text', 'text', add_component_success);
     } else{
-        postComponent(edit_url, '#TextModal', '#id_text', 'text', edit_component_success)
+        postComponent(edit_url, '#textTab', '#id_text', 'text', edit_component_success)
     }
 
 });
 
 $('#confirmQuote').click(function(){
     if ($(this).attr('data-cmd')=='add'){
-        postComponent(add_url, '#QuoteModal', '#id_quote','quote', add_component_success);
+        postComponent(add_url, '#quoteTab', '#id_quote','quote', add_component_success);
     } else{
-        postComponent(edit_url, '#QuoteModal', '#id_quote', 'quote', edit_component_success)
+        postComponent(edit_url, '#quoteTab', '#id_quote', 'quote', edit_component_success)
     }
 });
 
 $('#confirmVideo').click(function(){
     if ($(this).attr('data-cmd')=='add'){
-        postComponent(add_url, '#UrlModal', '#id_url', 'url', add_component_success);
+        postComponent(add_url, '#videoTab', '#id_url', 'url', add_component_success);
     } else{
-        postComponent(edit_url, '#UrlModal', '#id_url', 'url', edit_component_success);
+        postComponent(edit_url, '#videoTab', '#id_url', 'url', edit_component_success);
     }
 });
 
 $('#confirmImage').click(function(){
     if ($(this).attr('data-cmd')=='add'){
-        postComponent(add_url, '#ImageModal', '#id_image', 'image', add_component_success);
+        postComponent(add_url, '#imageTab', '#id_image', 'image', add_component_success);
     } else{
-        postComponent(edit_url, '#ImageModal', '#id_image', 'image', edit_component_success);
+        postComponent(edit_url, '#imageTab', '#id_image', 'image', edit_component_success);
     }
 });
 

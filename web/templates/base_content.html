@@ -6,57 +6,57 @@
 {% block content %}
 
 <div class="article" id="main_article">
+    <div class="col-sm-12 col-xs-12 article_info">
+        <h4 class="category">/{{ main_article.category}}</h4>
+        <div class="col-md-11 offset-md-1 title">
+            <h1>{{ main_article.title }}</h1>
+        </div>
+        <div class="lead_section col-md-6 offset-md-1">
+            <h6>{{ main_article.subtitle }}</h6>
+            {% for component in main_article.components.all %}
+                {% if component.kind == 'text' %}
+                    <p>{{component.text|truncatewords:40}}</p>
+                {% endif %}
+            {% endfor %}
+            <a href="{% url 'article_details' idk=main_article.pk %}" class="btn btn-default  read_more_btn">czytaj dalej</a>
+        </div>
+    </div>
+    <div class="article_overlay"></div>
     {% thumbnail main_article.cover "600x400" crop="center" as img %}
         <img  class="" src="{{ img.url }}" alt='okładka' width="100%">
     {% endthumbnail %}
-    <div class="article_overlay">
-        <div class="col-sm-12 col-xs-12 row">
-            <h4 class="category">/{{ main_article.category}}</h4>
-            <div class="col-md-6 offset-md-1 title">
-                <h1>{{ main_article.title }}</h1>
-            </div>
-            <div class="lead_section col-md-6 offset-md-1">
-                <h6>{{ main_article.subtitle }}</h6>
-                {% for component in main_article.components.all %}
-                    {% if component.kind == 'text' %}
-                        <p>{{component.text|truncatewords:40}}</p>
-                    {% endif %}
-                {% endfor %}
-                <a href="{% url 'article_details' idk=main_article.pk %}" class="btn btn-default pull-right read_more_btn">czytaj dalej</a>
-
-            </div>
-        </div>
-    </div>
 </div>
-<div class="row" id="under_main_article">
-    <div class="col-md-7 offset-md-1 newest_articles">
-        <h3>/najnowsze</h3>
+<div class="row-no-padding" id="under_main_article">
+    <div class="col-md-9 col-xs-12 newest_articles">
         <div class="row">
         {% for article in newest_articles %}
-            <div class="article col-sm-11">
-                {% thumbnail main_article.cover "400x225" crop="center" as img %}
-                    <img class="article_image" src="{{ img.url }}" alt='okładka'>
-                {% endthumbnail %}
-                <div class="col-sm-12 col-sm-offset-3 title">
-                    <h3>{{article.title}}</h3>
-                    <div class="description">
-                        {{article.subtitle}}
+            <div class="col-md-6 col-xs-12">
+                <div class="article_container">
+                    <div class="article">
+                        <div class="article_overlay"></div>
+                        {% thumbnail main_article.cover "400x225" crop="center" as img %}
+                            <img class="article_image" src="{{ img.url }}" alt='okładka'>
+                        {% endthumbnail %}
+                        <div class="article_info">
+                            <div class="title">
+                                <h3>{{article.title}}</h3>
+                                <div class="description">
+                                    {{article.subtitle}}
+                                </div>
+                            </div>
+                            <h5 class="category_name">/{{article.category}}</h5>
+                            <div class="when_was_published">
+                                {{article.when_was_published}}
+                            </div>
+                            <a href="{% url 'article_details' idk=article.pk %}" class="btn btn-default  read_more_btn">czytaj dalej</a>
+                        </div>
                     </div>
                 </div>
-                <div class="article_overlay">
-                    <h5 class="category_name">
-                        /{{article.category}}
-                    </h5>
-                    <div class="when_was_published">
-                        {{article.when_was_published}}
-                    </div>
-                </div>
-                <a href="{% url 'article_details' idk=article.pk %}" class="btn btn-default pull-right read_more_btn">czytaj dalej</a>
             </div>
         {% endfor %}
         </div>
     </div>
-    <div class="col-md-4 popular_articles">
+    <div class="col-md-3 col-xs-12 popular_articles">
         <div class="col-md-10 offset-md-1">
         <h3>/popularne</h3>
         {% for article in popular_articles %}

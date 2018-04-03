@@ -47,7 +47,7 @@ class Article(models.Model):
     status = models.CharField(max_length=100, default="created", verbose_name='status')
     tags = models.CharField(max_length=100, null=True, blank=True, verbose_name='tagi')
     category = models.ForeignKey('Category', null=True, blank=True, verbose_name='dział')
-    cover = ImageField(upload_to='web/media/covers', null=False, blank=False, verbose_name='okładka')
+    cover = ImageField(upload_to='web/media/covers', default="web/static/images/thumbnail.jpg", null=False, blank=False, verbose_name='okładka')
     components = models.ManyToManyField('Component')
 
     @classmethod

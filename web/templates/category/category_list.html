@@ -9,17 +9,17 @@
                 <h3>lista działów</h3>
             </div>
             <div class="col-sm-7">
-                <a href="{% url 'category_details' %}" id="add_new_category" type="button" class="btn btn-primary pull-right">dodaj dział</a>
+                <a href="{% url 'category_details' %}" id="add_new_category" type="button" class="btn btn-primary ">dodaj dział</a>
             </div>
         </div>
         <hr>
         <table id="category_table">
             <thead>
                 <tr>
-                    <td><input type="checkbox"></td>
-                    <td>okładka</td>
-                    <td>nazwa</td>
-                    <td>akcje</td>
+                    <th><input type="checkbox"></th>
+                    <th>okładka</th>
+                    <th>nazwa</th>
+                    <th>akcje</th>
                 </tr>
             </thead>
             <tbody id='category_list'>
@@ -35,8 +35,8 @@
                         </td>
                         <td>{{category.name}}</td>
                         <td>
-                            <a href="{% url 'category_details' idk=category.pk %}"   class="btn btn-default" data-toggle="modal" data-idk="{{category.pk}}">Edytuj</a>
-                            <button class="delete_category btn btn-default" data-idk="{{category.pk}}">Usuń</button>
+                            <a href="{% url 'category_details' idk=category.pk %}"   class="btn btn-default edit_btn" data-toggle="modal" data-idk="{{category.pk}}"></a>
+                            <button class="delete_category btn remove_btn" data-idk="{{category.pk}}"></button>
                         </td>
                     </tr>
                 {% empty %}
