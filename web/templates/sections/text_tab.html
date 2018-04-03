@@ -1,6 +1,7 @@
 {% load crispy_forms_tags %}
-<form action="" method="post" id="new-paragraph-form" onsubmit="event.preventDefault();"> {% csrf_token %}
-    <span class="width100">{{paragraphForm.header|as_crispy_field}}</span>
-    <span class="width100">{{paragraphForm.text|as_crispy_field}}</span>
-    <button id="confirmText" data-edit='edytuj kolumnę' data-add="dodaj kolumnę" data-cmd="add" type="submit" class="btn btn-default confirm_button">dodaj kolumnę</button>
+<form action="" method="" id="new-paragraph-form" onsubmit="event.preventDefault();">
+    {% csrf_token %}
+    {{paragraphForm.header|as_crispy_field}}
+    {{paragraphForm.text|as_crispy_field}}
+    <button type="button" id="confirmText" data-edit='edytuj kolumnę' data-add="dodaj kolumnę" data-cmd="add" class="btn btn-default confirm_button">dodaj kolumnę</button>
 </form>

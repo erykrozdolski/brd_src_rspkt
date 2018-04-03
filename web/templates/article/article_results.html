@@ -1,0 +1,55 @@
+{% load thumbnail %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% if article_list %}
+<thead>
+    <tr>
+        <td>
+            <input type="checkbox" id="select_all">
+        </th>
+        <th></th>
+        <th>tytuł</th>
+        <th>podtytuł</th>
+        <th>autor</th>
+        <th>data utworzenia</th>
+        <th>data publikacji</th>
+        <th>status</th>
+        <th>kategoria</th>
+        <th></th>
+    </tr>
+</thead>
+<tbody>
+{% endif %}
+
+{% for article in article_list %}
+    <tr>
+        <td>
+            <input type="checkbox" data-idk="{{article.pk}}">
+        </td>
+        <td>
+            <a href="{% url 'article_details' idk=article.pk %}">
+            {% thumbnail article.cover "75x75" crop="center" as img %}
+            <img class="centered articleListCover" src="{{ img.url }}" width="100%" alt='okładka'>
+            {% endthumbnail %}
+            </a>
+        </td>
+        <td>{{article.title}}</td>
+        <td>{{article.subtitle}}</td>
+        <td>{{article.author}}</td>
+        <td>{{article.created}}</td>
+        <td>{{article.published|default_if_none:"-"}}</td>
+        <td>{{article.state}}</td>
+        <td>{{article.category}}</td>
+        <td>
+            <button type="button" class="btn btn-default trigger_article" data-idk="{{article.pk}}"
+                    data-trigger="{% if article.is_published %}unpublish_article{% else %}publish_article{% endif %}">
+                {% if article.is_published %} Ukryj {% else %} Opublikuj {% endif %}
+            </button>
+            <a href="{% url 'article_creator' idk=article.pk %}" class="btn edit_btn"></a>
+            <button type="button" class="btn remove_btn delete_article" data-idk="{{article.pk}}"></button>
+        </th>
+    </tr>
+{% empty %}
+        Brak wyników o podanych parametrach.
+{% endfor %}
+</tbody>

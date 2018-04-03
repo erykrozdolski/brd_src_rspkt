@@ -1,0 +1,28 @@
+{% load crispy_forms_tags %}
+<div id="CategoryModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog">
+    <form action="" method="post" id="new-category-form" enctype="multipart/form-data"  onsubmit="event.preventDefault()">
+      {% csrf_token %}
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">dodaj kategorię</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row mt10">
+            <div class="col-sm-12 ">
+                {{ category_form.name|as_crispy_field }}
+                {{ category_form.cover|as_crispy_field }}
+                <label for="changeImage" class="btn btn-default">Wybierz obraz z dysku</label>
+                <input class="hidden" value="add_category" name="cmd">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="addCategory" data-add='dodaj kategorię' data-edit="edytuj kategorię" data-cmd="add" type="submit">dodaj kategorię</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">anuluj</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

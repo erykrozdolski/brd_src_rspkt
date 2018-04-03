@@ -1,14 +1,57 @@
 {% extends "base.html" %}
-{% load render_table from django_tables2 %}
 {% block content %}
+{% load thumbnail %}
 {% load static %}
-<div class="row">
-    <div class="col-sm-12">
-        <h3>lista artykułów</h3>
+{% load crispy_forms_tags %}
+<div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                <h3>lista artykułów</h3>
+            </div>
+            <div class="col-sm-8">
+                <a href="{% url 'article_creator' %}" class="btn btn-primary">dodaj artykuł</a>
+                <button disabled id="toggle_selected" class="btn btn-primary change_selected">ukryj/opublikuj zaznaczone</button>
+                <button disabled id="delete_selected" class="btn btn-primary change_selected">usuń zaznaczone</button>
+            </div>
+        </div>
         <hr>
-        {% render_table articleTable %}
-        {% csrf_token %}
-    </div>
+        <form id="search_form" action="">
+            <div class="row">
+                {% csrf_token %}
+                <div class="col-md-6">
+                    {{ search_form.search|as_crispy_field }}
+                </div>
+                <div class="col-md-3">
+                    {{ search_form.title|as_crispy_field }}
+                </div>
+                <div class="col-md-3">
+                    {{ search_form.category|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row" id="advanced_fields">
+                <div class="col-md-4">
+                    {{ search_form.subtitle|as_crispy_field }}
+                </div>
+                <div class="col-md-4">
+                    {{ search_form.author|as_crispy_field }}
+                </div>
+                <div class="col-md-4">
+                    {{ search_form.created|as_crispy_field }}
+                </div>
+                <div class="col-md-3">
+                    {{ search_form.published|as_crispy_field }}
+                </div>
+            </div>
+            <div class="">
+                <button id='search_in_articles' type="button" class="btn btn-primary">Wyszukaj</button>
+                <button id='advanced_searching' type="button" class="btn btn-default">wyszukiwanie zaawansowane</button>
+                <button id='clear_search_form' type="button" class="btn btn-default">wyczyść filtry</button>
+            </div>
+        </form>
+        <hr>
+        <table id="article_list">
+            {% include 'article/article_results.html' %}
+        </table>
 </div>
 {% endblock %}
 

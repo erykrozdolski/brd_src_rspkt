@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load thumbnail %}
+{% load static %}
+{% block title %} Logowanie {% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{% if idk %}edycja danych użytkownika{% else %} dodaj użytkownika {% endif%}</h1>
+        {% if user_form.errors %}
+        {{user_form.errors}}
+         Nazwa użytkownika lub hasło są nieprawidłowe.
+         Spróbuj ponownie.
+        {% endif %}
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ user_form.username |as_crispy_field }}
+            {{ user_form.email |as_crispy_field }}
+            {% if not idk %}
+                {{ user_form.password |as_crispy_field }}
+            {% endif %}
+            <p>{{user_form.instance.avatar}}</p>
+            {{ user_form.bio |as_crispy_field }}
+            {{ user_form.avatar |as_crispy_field }}
+            <label for="add_image" class="btn btn-default">Wybierz obraz z dysku</label>
+            {% if user_form.instance.avatar %}
+                {% thumbnail user_form.instance.avatar "100x100" crop="center" as img %}
+                <img id="preview_image" src="{{ img.url }}" width="{{ img.width }}" height="{{ img.height }}">
+                {% endthumbnail %}
+            {% else %}
+                <img id="preview_image" src="" width="" height="">
+            {% endif %}
+            <button class='btn btn-primary' type="submit" value="">{% if idk %}Edytuj{% else %} dodaj{% endif%} użytkownika </button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/user_form.js' %}"></script>
+{% endblock %}

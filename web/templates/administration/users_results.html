@@ -1,0 +1,42 @@
+{% load thumbnail %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% if users_list %}
+<thead>
+        <tr>
+            <td><input type="checkbox"></td>
+            <td>avatar</td>
+            <td>nazwa użytkownika</td>
+            <td>status</td>
+            <td>akcje</td>
+        </tr>
+    </thead>
+<tbody>
+{% endif %}
+
+{% for user in users_list %}
+<tr>
+    <td>
+        <input type="checkbox">
+    </td>
+    <td>
+        <a href="{% url 'user_details' idk=user.pk %}">
+        {% thumbnail user.avatar "350x250" crop="center" as img %}
+        <img class="centered articleListCover" src="{{ img.url }}" width="100%" alt='okładka'>
+        {% endthumbnail %}
+        </a>
+    </td>
+    <td><a href="{% url 'user_details' idk=user.pk %}">{{user.username}}</a></td>
+    <td class="user_status">{% if user.is_active %} aktywny {% else %} zablokowany {% endif %}</td>
+    <td>
+        <button class="btn btn-default trigger_user_status" data-idk="{{user.pk}}"
+                data-trigger="{% if user.is_active %}block_user{% else %}unblock_user{% endif %}">
+            {% if user.is_active %} Zablokuj {% else %} Odblokuj {% endif %}
+        </button>
+        <button class="btn btn-default delete_user" data-idk="{{user.pk}}">Usuń konto</button>
+    </td>
+</tr>
+{% empty %}
+        Brak wyników o podanych parametrach.
+{% endfor %}
+</tbody>

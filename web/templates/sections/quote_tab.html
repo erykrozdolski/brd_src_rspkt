@@ -1,0 +1,7 @@
+{% load crispy_forms_tags %}
+<form action="" method="post" id="new-quote-form" onsubmit="event.preventDefault();">
+    {% csrf_token %}
+    {{ quoteForm.header|as_crispy_field }}
+    {{ quoteForm.quote|as_crispy_field }}
+    <button id="confirmQuote" data-add='dodaj cytat' data-edit="edytuj cytat" data-cmd="add" type="button" class="btn btn-default confirm_button">dodaj cytat</button>
+</form>
