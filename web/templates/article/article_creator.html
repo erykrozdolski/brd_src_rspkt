@@ -86,6 +86,7 @@
             <div class="html_templates">
                 <li id="" class="ui-state-default component_li ui-sortable-handle">
                     <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                    <span class="kind_display"></span>
                     <span class="header_name"></span>
                     <button class="btn btn-default edit_btn editComponent" data-cmd="edit" type="button" data-target=""></button>
                     <button class="btn btn-default remove_btn  deleteComponent" type="button"></button>
@@ -96,17 +97,13 @@
             <ul id="sortable" class="articleSkeleton">
                 {% if idk %}
                     {% for component in article.components.all %}
-                        <li id='{{component.id}}' class="ui-state-default component_li row">
-                            <div class="div col-sm-8">
-                                <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-                                {{component.get_kind_display}}
-                                <span class="header_name">{{component.header}}</span>
-                            </div>
-                            <div class="div col-sm-4">
-                                <button class="btn edit_btn{% if component.kind == 'image' %} editImage {% else %} editComponent  {% endif%} "
-                                data-cmd="edit" type="button" data-toggle="modal" data-target="#{{component.kind |capfirst}}Modal"></button>
-                                <button class="btn remove_btn deleteComponent" type="button"></button>
-                            </div>
+                        <li id='{{component.id}}' class="ui-state-default component_li ui-sortable-handle">
+                            <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                            {{component.get_kind_display}}
+                            <span class="header_name">{{component.header}}</span>
+                            <button class="btn edit_btn{% if component.kind == 'image' %} editImage {% else %} editComponent  {% endif%} "
+                            data-cmd="edit" type="button" data-toggle="modal" data-target="#{{component.kind |capfirst}}Modal"></button>
+                            <button class="btn remove_btn deleteComponent" type="button"></button>
                             <input class="component_idk" name="component_idk" value="{{component.id}}" type="hidden">
                             <input class="component_position" name="component_position" value="{{component.position}}" type="hidden">
                         </li>

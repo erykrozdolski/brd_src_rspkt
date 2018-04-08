@@ -6138,16 +6138,15 @@ ul {
 
 .component_li {
   margin-bottom: 10px;
-  padding: 5px;
+  padding-left: 5px;
   border: 2px solid black;
-  border-radius: 5px; }
+  border-radius: 5px;
+  background: white; }
 
 table {
   width: 100%; }
   table tr {
     padding: 10 0 10 0; }
-    table tr td {
-      padding: 10; }
 
 .html_templates {
   display: none; }
@@ -6536,6 +6535,9 @@ textarea.form-control, textarea.select2_container {
   background-image: url("../icons/image.png"); }
 
 .ui-icon-arrowthick-2-n-s {
+  height: 30px;
+  width: 20px;
+  margin: 0;
   display: inline-block;
   background-image: url("../icons/hamburger.png"); }
 

@@ -100,11 +100,11 @@ $(document).ready(function(){
     $("input[type='email']").parent().siblings(".control-label").addClass("floating");
     $("textarea").parent().siblings(".control-label").addClass("floating");
     $("select").parent().siblings(".control-label").addClass("floating");
-    $(".select2_container").closest('.control-group').toggleClass('focused', $(this).text() != '');
-    alert($(".select2_container").text());
-})
+    let selector = $(".select2_container");
+    $(selector).closest('.control-group').toggleClass('focused', $(selector).text() != '');
+});
 
-$(".select2_container").on('change focus blur', function (e){
+$(".select2_container").on('change focus blur ready load', function (e){
     $(this).closest('.control-group').toggleClass('focused', (e.type === 'focus' || $(this).text() != ''));
 });
 

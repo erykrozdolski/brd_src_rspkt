@@ -40,7 +40,9 @@ function postComponent(url, tab, input, kind, success_function=none){
                     $('.html_templates li').clone().appendTo('.articleSkeleton');
                     $('.articleSkeleton li:last-child ').attr('id', data.idk);
                     $('#'+data.idk).prepend(data.kind);
+                    $('#'+data.idk +" .kind_display").text(kind);
                     $('#'+data.idk +" .header_name").text(header);
+                    alert(header);
                     $('#'+data.idk +" .editComponent").attr('data-target', '#' + capitalize(data.kind) + 'Tab');
                     $('#'+data.idk +" .editComponent").attr('class', ' editImage');
                     $('#'+data.idk +" .editComponent").removeClass("editComponent" ).addClass( "editImage" );
