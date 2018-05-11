@@ -16,10 +16,15 @@
     </head>
     <body>
         {% include "main_nav.html" %}
-        <div class="container main_container">
             <main>
-                {% block content %}
+                <div class="main_container">
+                {% block fluid_content %}
+                    <div class="container ">
+                        {% block content %}
+                        {% endblock %}
+                    </div>
                 {% endblock %}
+                </div>
             </main>
             <footer>
                 {% include "footer.html" %}

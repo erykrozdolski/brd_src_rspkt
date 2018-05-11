@@ -108,12 +108,11 @@ component_kinds = (
 
 class Component(models.Model):
     position = models.PositiveIntegerField(default=0, null=True, blank=True)
-    header = models.CharField(max_length=50, blank=False, null=False, unique=False)
     kind = models.CharField(max_length=20, blank=False, null=False, choices=component_kinds)
     image = ImageField(upload_to='web/media/images', null=True, blank=True)
     quote = models.CharField(max_length=100, null=True, blank=False)
     url = models.CharField(max_length=250, null=True, blank=False)
-    text = HTMLField(max_length=50, blank=False, null=False, unique=False, default="")
+    text = HTMLField(max_length=250, blank=False, null=False, unique=False, default="")
 
 
 class Category(models.Model):

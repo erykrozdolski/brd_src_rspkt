@@ -203,3 +203,16 @@ $('#cancel_image').click(function(){
     $('#preview_image').empty();
     $('#add_image').empty();
 })
+
+$('#addImage').click(function(){
+    
+})
+
+$('#addText').click(function(){
+})
+
+$('#addQuote').click(function(){
+})
+
+$('#addVideo').click(function(){
+})

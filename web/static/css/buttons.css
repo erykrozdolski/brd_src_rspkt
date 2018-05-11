@@ -1,0 +1,75 @@
+.icon, .round_icon, .image_btn, .quote_btn, .text_btn, .video_btn, .ui-icon-arrowthick-2-n-s, .remove_btn, .save_btn, .bin_btn, .search_btn, .advanced_search_btn, .add_btn, .edit_btn, .paragraph_icon, .quote_icon, .video_icon, .image_icon {
+  -webkit-appearance: unset;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: transparent;
+  cursor: pointer;
+  width: 35px;
+  height: 35px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: block; }
+
+.round_icon {
+  border: 2px solid black;
+  border-radius: 25px; }
+
+.image_btn {
+  background-image: url("../icons/image.png"); }
+
+.quote_btn {
+  background-image: url("../icons/quote.png"); }
+
+.text_btn {
+  background-image: url("../icons/data.png"); }
+
+.video_btn {
+  background-image: url("../icons/video.png"); }
+
+.image_btn {
+  background-image: url("../icons/image.png"); }
+
+.ui-icon-arrowthick-2-n-s {
+  height: 30px;
+  width: 20px;
+  margin: 0;
+  display: inline-block;
+  background-image: url("../icons/hamburger.png"); }
+
+.remove_btn {
+  background-image: url("../icons/remove.png"); }
+
+.save_btn {
+  background-image: url("../icons/save.png"); }
+
+.bin_btn {
+  background-image: url("../icons/bin.png"); }
+
+.search_btn {
+  background-image: url("../icons/search.png"); }
+
+.advanced_search_btn {
+  background-image: url("../icons/advanced_search.png"); }
+
+.add_btn {
+  background-image: url("../icons/add.png"); }
+
+.edit_btn {
+  background-image: url("../icons/edit.png"); }
+
+.paragraph_icon {
+  background-image: url("../icons/data.png"); }
+
+.quote_icon {
+  background-image: url("../icons/quote.png"); }
+
+.video_icon {
+  background-image: url("../icons/video.png"); }
+
+.image_icon {
+  background-image: url("../icons/image.png"); }
+
+button {
+  background: unset;
+  border: unset; }
